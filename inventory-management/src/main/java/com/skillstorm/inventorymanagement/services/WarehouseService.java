@@ -16,4 +16,8 @@ public class WarehouseService {
     public List<Warehouse> findAllWarehouse(){
         return warehouseRepo.findAll();
     }
+
+    public Warehouse addWarehouse(Warehouse warehouseToBeAdd) {
+        return warehouseRepo.save(warehouseToBeAdd);
+    }
 }

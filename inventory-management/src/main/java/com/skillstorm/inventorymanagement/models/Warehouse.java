@@ -94,4 +94,15 @@ public class Warehouse {
     public int hashCode() {
         return Objects.hash(id, name, location, size, capacity);
     }
+
+    @Override
+    public String toString() {
+        return "Warehouse{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", location='" + location + '\'' +
+                ", size=" + size +
+                ", capacity=" + capacity +
+                '}';
+    }
 }
