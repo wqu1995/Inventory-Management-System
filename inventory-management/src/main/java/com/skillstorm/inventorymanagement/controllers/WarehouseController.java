@@ -32,13 +32,13 @@ public class WarehouseController {
     /**
      * Method to handle POST(/warehouse/addWarehouse) request.
      *
-     * @param warehouseToBeAdd the warehouse to be add
+     * @param warehouseToBeAdded the warehouse to be added
      * @return the response entity
      */
     @PostMapping("/addWarehouse")
-    public ResponseEntity<Warehouse> addWarehouse(@RequestBody Warehouse warehouseToBeAdd){
+    public ResponseEntity<Warehouse> addWarehouse(@RequestBody Warehouse warehouseToBeAdded){
         //System.out.println(warehouseToBeAdd.toString());
-        Warehouse newWarehouse = warehouseService.addWarehouse(warehouseToBeAdd);
+        Warehouse newWarehouse = warehouseService.addWarehouse(warehouseToBeAdded);
 
         return new ResponseEntity<>(newWarehouse, HttpStatus.CREATED);
     }
@@ -46,14 +46,29 @@ public class WarehouseController {
     /**
      * Method to handle PUT(/warehouse/updateWarehouse) request
      *
-     * @param warehouseToBeUpdate the warehouse to be update
+     * @param warehouseToBeUpdated the warehouse to be updated
      * @return the response entity
      */
     @PutMapping("/updateWarehouse")
-    public ResponseEntity<Warehouse> updateWarehouse(@RequestBody Warehouse warehouseToBeUpdate){
+    public ResponseEntity<Warehouse> updateWarehouse(@RequestBody Warehouse warehouseToBeUpdated){
         //System.out.println(warehouseToBeAdd.toString());
-        Warehouse updatedWarehouse = warehouseService.addWarehouse(warehouseToBeUpdate);
+        Warehouse updatedWarehouse = warehouseService.addWarehouse(warehouseToBeUpdated);
 
         return new ResponseEntity<>(updatedWarehouse, HttpStatus.ACCEPTED);
     }
+
+    /**
+     * Method to handle DELETE(/warehouse/deleteWarehouse) request
+     *
+     * @param warehouseToBeDeleted the warehouse to be deleted
+     * @return the response entity
+     */
+    @DeleteMapping("/deleteWarehouse")
+    public ResponseEntity<Integer> deleteWarehouse(@RequestBody Warehouse warehouseToBeDeleted){
+        //System.out.println(warehouseToBeDelete.getName());
+        int response = warehouseService.deleteWarehouse(warehouseToBeDeleted);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 }

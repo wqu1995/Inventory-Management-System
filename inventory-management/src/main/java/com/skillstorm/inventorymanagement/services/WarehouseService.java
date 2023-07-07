@@ -26,10 +26,21 @@ public class WarehouseService {
      * Add/update warehouse to database.
      * Function will update the warehouse entry in db if id is provided in the request body
      *
-     * @param warehouseToBeAdd the warehouse to be add
+     * @param warehouseToBeAdded the warehouse to be add
      * @return the warehouse being added
      */
-    public Warehouse addWarehouse(Warehouse warehouseToBeAdd) {
-        return warehouseRepo.save(warehouseToBeAdd);
+    public Warehouse addWarehouse(Warehouse warehouseToBeAdded) {
+        return warehouseRepo.save(warehouseToBeAdded);
+    }
+
+    /**
+     * Delete warehouse that matches the id in database.
+     *
+     * @param warehouseToBeDeleted the warehouse to be deleted
+     * @return the int
+     */
+    public int deleteWarehouse(Warehouse warehouseToBeDeleted) {
+        //System.out.println(warehouseToBeDeleted.toString());
+        return warehouseRepo.costumeDeleteById(warehouseToBeDeleted.getId());
     }
 }
