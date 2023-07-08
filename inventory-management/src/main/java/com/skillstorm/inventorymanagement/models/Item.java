@@ -3,6 +3,9 @@ package com.skillstorm.inventorymanagement.models;
 import javax.persistence.*;
 import java.util.Objects;
 
+/**
+ * The type Item.
+ */
 @Entity
 @Table(name = "items")
 public class Item {
