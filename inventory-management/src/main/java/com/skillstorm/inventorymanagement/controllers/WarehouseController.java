@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/warehouses")
+@CrossOrigin
 public class WarehouseController {
     @Autowired
     WarehouseService warehouseService;
