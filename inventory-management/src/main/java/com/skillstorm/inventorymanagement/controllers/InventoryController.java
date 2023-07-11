@@ -26,7 +26,9 @@ public class InventoryController {
     public ResponseEntity<List<Inventory>> findAllInventories(){
         List<Inventory> inventories = inventoryService.findAllInventories();
 
+
         return new ResponseEntity<>(inventories, HttpStatus.OK);
+
     }
 
     /**
