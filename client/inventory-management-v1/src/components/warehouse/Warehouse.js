@@ -18,21 +18,6 @@ const Warehouse = ({warehouses}) => {
                 </tr>
             </thead>
             <tbody>
-                {/* {
-                    warehouses?.map((warehouse) =>{
-                        <tr key = {warehouse.id}>
-                            <td>{warehouse.id}</td>
-                            <td>{warehouse.name}</td>
-                            <td>{warehouse.location}</td>
-                            <td>{warehouse.size}</td>
-                            <td>{warehouse.capacity}</td>
-                            <td>
-                                <button>Edit</button>
-                                <button>Delete</button>
-                            </td>
-                        </tr>
-                    })
-                } */}
                 {warehouses ? (
                     warehouses.map((warehouse) =>(
                         <tr key = {warehouse.id}>

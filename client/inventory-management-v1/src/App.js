@@ -5,6 +5,7 @@ import Layout from './components/Layout';
 import {Routes, Route} from 'react-router-dom'
 import Home from './components/home/Home';
 import Header from './components/header/Header';
+import Item from './components/item/Item';
 
 function App() {
 
@@ -31,6 +32,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout/>}>
           <Route path="/" element={<Home warehouses = {warehouses}/>}></Route>
+          <Route path="/items" element={<Item/>}></Route>
         </Route>
       </Routes>
     </div>
