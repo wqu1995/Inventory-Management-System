@@ -1,25 +1,10 @@
 import React from 'react'
 import './Warehouse.css';
-import { Carousel } from 'bootstrap';
-import {Paper} from '@mui/material'
+
 
 const Warehouse = ({warehouses}) => {
   return (
     <div>
-        {/* <Carousel>
-            {
-                warehouses.map((warehouse) =>{
-                    return (
-                        <Paper>
-                            <div>
-                                {warehouse.id}
-                                {warehouse.name}
-                            </div>
-                        </Paper>
-                    )
-                })
-            }
-        </Carousel> */}
         <table>
             <thead>
                 <tr>
@@ -28,11 +13,27 @@ const Warehouse = ({warehouses}) => {
                     <th>Location</th>
                     <th>Size</th>
                     <th>Capacity</th>
+                    <th>Actions</th>
 
                 </tr>
             </thead>
             <tbody>
-                {warehouses.length > 0 ? (
+                {/* {
+                    warehouses?.map((warehouse) =>{
+                        <tr key = {warehouse.id}>
+                            <td>{warehouse.id}</td>
+                            <td>{warehouse.name}</td>
+                            <td>{warehouse.location}</td>
+                            <td>{warehouse.size}</td>
+                            <td>{warehouse.capacity}</td>
+                            <td>
+                                <button>Edit</button>
+                                <button>Delete</button>
+                            </td>
+                        </tr>
+                    })
+                } */}
+                {warehouses ? (
                     warehouses.map((warehouse) =>(
                         <tr key = {warehouse.id}>
                             <td>{warehouse.id}</td>
@@ -40,6 +41,10 @@ const Warehouse = ({warehouses}) => {
                             <td>{warehouse.location}</td>
                             <td>{warehouse.size}</td>
                             <td>{warehouse.capacity}</td>
+                            <td>
+                                <button>Edit</button>
+                                <button>Delete</button>
+                            </td>
                         </tr>
                     ))
                 ) :(
