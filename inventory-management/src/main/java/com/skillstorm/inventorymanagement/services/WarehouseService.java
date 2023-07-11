@@ -36,11 +36,11 @@ public class WarehouseService {
     /**
      * Delete warehouse that matches the id in database.
      *
-     * @param warehouseToBeDeleted the warehouse to be deleted
+     * @param warehouseId the warehouseId to be deleted
      * @return the int
      */
-    public int deleteWarehouse(Warehouse warehouseToBeDeleted) {
+    public int deleteWarehouse(Integer warehouseId) {
         //System.out.println(warehouseToBeDeleted.toString());
-        return warehouseRepo.costumeDeleteById(warehouseToBeDeleted.getId());
+        return warehouseRepo.costumeDeleteById(warehouseId);
     }
 }

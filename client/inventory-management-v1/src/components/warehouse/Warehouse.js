@@ -48,6 +48,21 @@ function Warehouse() {
         })
     }
 
+    const handleDeleteWarehouse = (warehouseId) =>{
+        //console.log(warehouseToBeDeleted)
+        const confirmed = window.confirm('Are you sure you want to delete this warehouse?');
+        if(confirmed){
+            api.delete(`/warehouses/deleteWarehouse/${warehouseId}`).then((response) =>{
+                if(response.status === 200 && response.data===1){
+                    setWarehouses(prevWarehouses => prevWarehouses.filter(warehouse => warehouse.id !== warehouseId));
+                }
+            }).catch((error) =>{
+                console.log(error);
+            })
+
+        }
+    }
+
     const handleEditModalOpen = (warehouse) =>{
         setEditingWarehouse(warehouse);
     }
@@ -89,7 +104,7 @@ function Warehouse() {
                             <div>
                             <Button variant="outline-primary" size="sm" onClick={() => handleEditModalOpen(warehouse)}> Edit</Button>
                             <span className="mr-2"></span> {/* Add spacing between buttons */}
-                            <Button variant="outline-danger" size="sm"> Delete</Button>
+                            <Button variant="outline-danger" size="sm" onClick={() => handleDeleteWarehouse(warehouse.id)}> Delete</Button>
                             </div>
                         </div>
                     </Card.Body>
@@ -109,6 +124,7 @@ function Warehouse() {
                 warehouse={editingWarehouse}
                 handleEditWarehouse={handleEditWarehouse}
             />
+            
         </div>
     )
 }

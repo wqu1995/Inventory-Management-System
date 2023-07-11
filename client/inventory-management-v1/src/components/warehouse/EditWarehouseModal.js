@@ -37,29 +37,29 @@ function EditWarehouseModal({ show, handleClose, warehouse, handleEditWarehouse 
     return (
         <Modal show = {show} onHide={handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Edit Warehouse</Modal.Title>
+                <Modal.Title className="text-dark">Edit Warehouse</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form>
-                    <Form.Group>
+                    <Form.Group className='mb-3'>
                         <Form.Label>Name</Form.Label>
                         {editWarehouseData &&(
                             <Form.Control type="text" value={editWarehouseData.name} onChange={(e)=>handleChange('name', e)} required/>
                         )}
-                    </Form.Group>
-                    <Form.Group>
+                    </Form.Group >
+                    <Form.Group className='mb-3'>
                         <Form.Label>Location</Form.Label>
                         {editWarehouseData &&(
                             <Form.Control type="text" value={editWarehouseData.location} onChange={(e)=>handleChange('location', e)} required/>
                         )}
                     </Form.Group>
-                    <Form.Group>
+                    <Form.Group className='mb-3'>
                         <Form.Label>Warehouse Size</Form.Label>
                         {editWarehouseData &&(
                             <Form.Control type="number" value={editWarehouseData.size}  disabled/>
                         )}
                     </Form.Group>
-                    <Form.Group>
+                    <Form.Group className='mb-3'>
                         <Form.Label>Warehouse Capacity</Form.Label>
                         {editWarehouseData &&(
                             <Form.Control type="number" value={editWarehouseData.capacity} onChange={(e)=>handleChange('capacity', e)} required/>
@@ -69,7 +69,7 @@ function EditWarehouseModal({ show, handleClose, warehouse, handleEditWarehouse 
             </Modal.Body>
 
             <Modal.Footer>
-                <Button variant='primary' onClick={handleSubmit}>Add!</Button>
+                <Button variant='primary' onClick={handleSubmit}>Edit!</Button>
                 <Button variant='secondary' onClick={handleClose}>Close</Button>
             </Modal.Footer> 
         </Modal>

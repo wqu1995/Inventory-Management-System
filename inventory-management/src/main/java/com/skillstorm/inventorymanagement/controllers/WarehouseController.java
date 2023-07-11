@@ -61,13 +61,13 @@ public class WarehouseController {
     /**
      * Method to handle DELETE(/warehouse/deleteWarehouse) request
      *
-     * @param warehouseToBeDeleted the warehouse to be deleted
+     * @param warehouseId the warehouseId to be deleted
      * @return the response entity
      */
-    @DeleteMapping("/deleteWarehouse")
-    public ResponseEntity<Integer> deleteWarehouse(@RequestBody Warehouse warehouseToBeDeleted){
-        //System.out.println(warehouseToBeDelete.getName());
-        int response = warehouseService.deleteWarehouse(warehouseToBeDeleted);
+    @DeleteMapping("/deleteWarehouse/{warehouseId}")
+    public ResponseEntity<Integer> deleteWarehouse(@PathVariable Integer warehouseId){
+        //System.out.println(warehouseToBeDeleted.toString());
+        int response = warehouseService.deleteWarehouse(warehouseId);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
