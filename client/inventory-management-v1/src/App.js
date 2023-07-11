@@ -1,42 +1,25 @@
-import './App.css';
-import api from './api/axiosConfig';
-import {useState, useEffect} from 'react';
-import Layout from './components/Layout';
-import {Routes, Route} from 'react-router-dom'
-import Home from './components/home/Home';
-import Header from './components/header/Header';
-import Item from './components/item/Item';
+import React from 'react'
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import Header from './components/header/Header'
+import Items from './components/items/Items';
+import Inventory from './components/inventory/Inventory';
+import Warehouse from './components/warehouse/Warehouse';
 
 function App() {
-
-  const [warehouses, setWarehouses] = useState();
-
-  const getWarehouses = async () =>{
-
-    try{
-      const response = await api.get("/warehouses");
-      //console.log(response.data);
-      setWarehouses(response.data);
-    }catch(err){
-      console.log(err);
-    }
-  }
-
-  useEffect(() =>{
-    getWarehouses();
-  }, [])
-
   return (
-    <div className="App">
-      <Header/>
-      <Routes>
-        <Route path="/" element={<Layout/>}>
-          <Route path="/" element={<Home warehouses = {warehouses}/>}></Route>
-          <Route path="/items" element={<Item/>}></Route>
-        </Route>
-      </Routes>
-    </div>
-  );
+    <Router>
+        <div className='container'>
+            <Header/>
+
+            <Routes>
+                <Route path='/items' element={<Items/>}></Route>
+                <Route path='/inventory' element={<Inventory/>}></Route>
+                <Route path='/' element={<Warehouse/>}></Route>
+            </Routes>
+        </div>
+    </Router>
+
+  )
 }
 
-export default App;
+export default App
