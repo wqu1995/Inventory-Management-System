@@ -3,7 +3,7 @@ import { Button, Form, Modal } from 'react-bootstrap'
 import api from '../../api/axiosConfig';
 
 
-function AddItemToWarehouseModal({filteredItems, wId, showModal, handleClose, handleAddItemToWarehouse}) {
+function AddItemToWarehouseModal({filteredItems, showModal, handleClose, handleAddItemToWarehouse}) {
 
     const modalRef = useRef(null);
 
@@ -22,7 +22,7 @@ function AddItemToWarehouseModal({filteredItems, wId, showModal, handleClose, ha
     }
 
     const handleCloseModal = (e) => {
-        handleClose();
+        handleClose(false);
       };
     
     useEffect(()=>{

@@ -88,3 +88,8 @@ margin: 0;
 .form-group {
   margin-bottom: 1rem;
 }
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}

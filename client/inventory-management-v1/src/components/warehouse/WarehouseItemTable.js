@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Table } from 'react-bootstrap';
+import { Modal, Table } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import AddItemToWarehouseModal from './AddItemToWarehouseModal';
 import api from '../../api/axiosConfig';
@@ -7,18 +7,19 @@ import api from '../../api/axiosConfig';
 
 
 function WarehouseItemTable({filteredItems, warehouseId, handleAddItem}) {
-    const [showModal, setShowModal] = useState(false);
+    const [showAddItemModal, setShowAddItemModal] = useState(false);
+    const [detailItem, setDetailItem] = useState(null);
 
     const handleAddItemClick = () =>{
-        setShowModal(true);
+        setShowAddItemModal(true);
     }
 
-    const handleCloseModal = () =>{
-        setShowModal(false);
-    }
+    const handleShowDetail = (item) => {
+        setDetailItem(item);
+    };
+    const handleDetailModalClose = () =>{
+        setDetailItem(null);
 
-    const handleSaveItem = () =>{
-        setShowModal(false);
     }
 
     const handleAddItemToWarehouse = (addItemData) =>{
@@ -49,6 +50,7 @@ function WarehouseItemTable({filteredItems, warehouseId, handleAddItem}) {
 
     }
 
+
     if(filteredItems.length === 0 ){
         return(
             <div className='mt-3'>
@@ -60,8 +62,8 @@ function WarehouseItemTable({filteredItems, warehouseId, handleAddItem}) {
                 <AddItemToWarehouseModal
                 filteredItems={filteredItems}
                 wId = {warehouseId}
-                showModal={showModal}
-                handleClose={setShowModal}
+                showModal={showAddItemModal}
+                handleClose={setShowAddItemModal}
                 handleAddItemToWarehouse = {handleAddItemToWarehouse}
                 />
             </div>
@@ -80,6 +82,7 @@ function WarehouseItemTable({filteredItems, warehouseId, handleAddItem}) {
                         <th>Item Id</th>
                         <th>Item Name</th>
                         <th>Quantity</th>
+                        <th>Operations</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -88,15 +91,41 @@ function WarehouseItemTable({filteredItems, warehouseId, handleAddItem}) {
                             <td>{item.itemId}</td>
                             <td>{item.itemName}</td>
                             <td>{item.quantity}</td>
+                            <td className="button-container">
+                                <Button variant="outline-secondary" size="sm" onClick={(e) => {e.stopPropagation();handleShowDetail(item)}}>Detail</Button>
+                                <Button variant="outline-primary" size="sm">Edit</Button>
+                                <Button variant="outline-danger" size="sm">Delete</Button>
+
+                            </td>
                         </tr>
                     ))}
                 </tbody>
             </Table>
 
+            <Modal show={detailItem !==null} onHide={handleDetailModalClose} onClick={(e) => e.stopPropagation()}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Details</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {detailItem &&(
+                        <div>
+                            <h2>{detailItem.itemName}</h2>
+                            <br></br>
+                            <h5>Id: {detailItem.itemId}</h5>
+                            <h5>Drescription: {detailItem.itemDescription}</h5>
+                            <h5>Quantity: {detailItem.quantity}</h5>
+                        </div>
+                    )}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant='secondary' onClick={handleDetailModalClose}>Close</Button>
+                </Modal.Footer>
+            </Modal>
+
             <AddItemToWarehouseModal
                 filteredItems={filteredItems}
-                showModal={showModal}
-                handleClose={setShowModal}
+                showModal={showAddItemModal}
+                handleClose={setShowAddItemModal}
                 handleAddItemToWarehouse = {handleAddItemToWarehouse}
             />
         </div>

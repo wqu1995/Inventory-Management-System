@@ -115,7 +115,8 @@ function Warehouse() {
             warehouseId: expandedWarehouse,
             itemId: obj.id,
             itemName: obj.name,
-            quantity: item.quantity
+            quantity: item.quantity,
+            itemDescription: obj.description
         }))
     );
 
