@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import api from '../../api/axiosConfig';
 import { Card } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
@@ -14,6 +14,7 @@ function Warehouse() {
     const [editingWarehouse, setEditingWarehouse] = useState(null);
     const [expandedWarehouse, setExpandedWarehouse] = useState(null);
     const [warehouseItemData, setWarehouseItemData] = useState([]);
+    const [updateTable, setUpdateTable] = useState(false);
 
     const getWarehouses = () =>{
         api.get("/warehouses").then((response) =>{
@@ -97,6 +98,7 @@ function Warehouse() {
     }
 
     const handleExpandWarehouse = (warehouseId) => {
+        //console.log(filteredItems)
         if(expandedWarehouse === warehouseId){
             setExpandedWarehouse(null);
         }else{
@@ -110,6 +112,7 @@ function Warehouse() {
       obj.inventories
         .filter((item) => item.id.warehouseId === expandedWarehouse)
         .map((item) => ({
+            warehouseId: expandedWarehouse,
             itemId: obj.id,
             itemName: obj.name,
             quantity: item.quantity
@@ -121,6 +124,19 @@ function Warehouse() {
         getWarehouses();
     }, [])
 
+    const modalRef = useRef(null);
+
+    const handleCardClick = (e) => {
+        const isClickedInsideModal = modalRef.current && modalRef.current.contains(e.target);
+        if (!isClickedInsideModal) {
+         // console.log("here");
+        }
+      };
+
+    const handleAddItem = () =>{
+        getWarehouses();
+        handleGetItemsByWarehouseId(expandedWarehouse);
+    }
 
     return (
         <div>
@@ -133,9 +149,8 @@ function Warehouse() {
                 <Card 
                     key={warehouse.id} 
                     className={`mb-3 custom-card ${expandedWarehouse === warehouse.id ? 'expanded' : ''}`}
-                    onClick={() => handleExpandWarehouse(warehouse.id)}
                 >
-                    <Card.Body onClick={()=> handleExpandWarehouse(warehouse.id)}>
+                    <Card.Body onClick={(e)=> {e.stopPropagation(); handleExpandWarehouse(warehouse.id); handleCardClick()} }>
                         <div className="d-flex justify-content-between align-items-center">
                             <div>
                                 <Card.Title>{warehouse.name}</Card.Title>
@@ -151,7 +166,11 @@ function Warehouse() {
                             </div>
                         </div>
                         {expandedWarehouse === warehouse.id && (
-                            <WarehouseItemTable filteredItems={filteredItems}/>
+                            <WarehouseItemTable 
+                            filteredItems={filteredItems}
+                            warehouseId = {expandedWarehouse}
+                            handleAddItem={handleAddItem}
+                            />
                         )}
                     </Card.Body>
 
