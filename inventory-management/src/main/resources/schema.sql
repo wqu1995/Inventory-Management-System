@@ -1,6 +1,6 @@
+drop table if exists inventories;
 drop table if exists warehouses;
 drop table if exists items;
-drop table if exists inventories;
 
 CREATE TABLE `warehouses` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
