@@ -11,6 +11,7 @@ function Warehouse() {
     const [warehouses, setWarehouses] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [editingWarehouse, setEditingWarehouse] = useState(null);
+    const [expandedWarehouse, setExpandedWarehouse] = useState(null);
 
     const getWarehouses = () =>{
         api.get("/warehouses").then((response) =>{
@@ -31,6 +32,7 @@ function Warehouse() {
     }
 
     const handleEditWarehouse = (editedWarehouse) =>{
+        //console.log(editedWarehouse);
         api.put("/warehouses/updateWarehouse", editedWarehouse).then((response)=>{
             if(response.status===202 && response.data){
                 setWarehouses(prevWarehouses =>{
@@ -64,6 +66,7 @@ function Warehouse() {
     }
 
     const handleEditModalOpen = (warehouse) =>{
+        
         setEditingWarehouse(warehouse);
     }
 
@@ -79,6 +82,9 @@ function Warehouse() {
         setShowModal(true);
     }
 
+    const handleExpandWarehouse = (warehouseId) => {
+        setExpandedWarehouse(expandedWarehouse === warehouseId ? null : warehouseId);
+      };
 
     useEffect(()=>{
         getWarehouses();
@@ -93,8 +99,12 @@ function Warehouse() {
             </div>
 
             {warehouses?.map((warehouse)=>(
-                <Card key={warehouse.id} className='mb-3 custom-card'>
-                    <Card.Body>
+                <Card 
+                    key={warehouse.id} 
+                    className={`mb-3 custom-card ${expandedWarehouse === warehouse.id ? 'expanded' : ''}`}
+                    onClick={() => handleExpandWarehouse(warehouse.id)}
+                >
+                    <Card.Body onClick={()=> handleExpandWarehouse(warehouse.id)}>
                         <div className="d-flex justify-content-between align-items-center">
                             <div>
                                 <Card.Title>{warehouse.name}</Card.Title>
@@ -102,11 +112,23 @@ function Warehouse() {
                                 <Card.Text>Size: {warehouse.size} Capacity: {warehouse.capacity}</Card.Text>
                             </div>
                             <div>
-                            <Button variant="outline-primary" size="sm" onClick={() => handleEditModalOpen(warehouse)}> Edit</Button>
+                            <Button variant="outline-primary" size="sm" onClick={(e) => {e.stopPropagation(); handleEditModalOpen(warehouse)}}> Edit</Button>
                             <span className="mr-2"></span> {/* Add spacing between buttons */}
-                            <Button variant="outline-danger" size="sm" onClick={() => handleDeleteWarehouse(warehouse.id)}> Delete</Button>
+                            <Button variant="outline-danger" size="sm" onClick={(e) => {e.stopPropagation(); handleDeleteWarehouse(warehouse.id)}}> Delete</Button>
+                            {/* <span className="mr-2"></span>  */}
+                            {/* <Button variant='outline-secondary' size='sm' onClick={()=> handleExpandWarehouse(warehouse.id)}>{expandedWarehouse === warehouse.id ? 'Hide Items' : 'Show Items'}</Button> */}
                             </div>
                         </div>
+                        {expandedWarehouse === warehouse.id && (
+                            <div className="mt-3">
+                                <h5>Items:</h5>
+                                <ul>
+                                    {warehouse.inventories?.map((item, index)=>(
+                                        <li key={index}>{item.id.itemId}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
                     </Card.Body>
 
                 </Card>
