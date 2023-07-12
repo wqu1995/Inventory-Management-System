@@ -1,7 +1,9 @@
 package com.skillstorm.inventorymanagement.services;
 
 import com.skillstorm.inventorymanagement.models.Inventory;
+import com.skillstorm.inventorymanagement.models.Warehouse;
 import com.skillstorm.inventorymanagement.repositories.InventoryRepository;
+import com.skillstorm.inventorymanagement.repositories.WarehouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,9 @@ import java.util.List;
 public class InventoryService {
     @Autowired
     InventoryRepository inventoryRepository;
+
+    @Autowired
+    WarehouseRepository warehouseRepository;
 
     /**
      * Find all inventories from the database.
@@ -30,7 +35,19 @@ public class InventoryService {
      */
     public Inventory addInventory(Inventory inventoryToBeUpdated) {
 
+        Warehouse warehouse = warehouseRepository.findById(inventoryToBeUpdated.getId().getWarehouseId()).orElse(null);
+
+        if(warehouse != null){
+            System.out.println(warehouse.getSize()+" "+inventoryToBeUpdated.getItem()+" "+ inventoryToBeUpdated.getQuantity());
+            int increment = inventoryToBeUpdated.getItem().getSize() * inventoryToBeUpdated.getQuantity();
+            warehouse.setSize(warehouse.getSize()+increment);
+            System.out.println(warehouse.getSize());
+
+            warehouseRepository.save(warehouse);
+        }
+
         return inventoryRepository.save(inventoryToBeUpdated);
+        //return inventoryRepository.save(inventoryToBeUpdated);
     }
 
     /**

@@ -13,6 +13,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/items")
+@CrossOrigin
 public class ItemController {
 
     @Autowired

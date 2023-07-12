@@ -119,7 +119,6 @@ public class Item {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", size=" + size +
-                ", inventories=" + inventories +
                 '}';
     }
 }

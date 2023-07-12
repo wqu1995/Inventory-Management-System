@@ -4,6 +4,7 @@ import { Card } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import AddWarehouseModal from './AddWarehouseModal';
 import EditWarehouseModal from './EditWarehouseModal';
+import WarehouseItemTable from './WarehouseItemTable';
 
 
 function Warehouse() {
@@ -12,6 +13,7 @@ function Warehouse() {
     const [showModal, setShowModal] = useState(false);
     const [editingWarehouse, setEditingWarehouse] = useState(null);
     const [expandedWarehouse, setExpandedWarehouse] = useState(null);
+    const [warehouseItemData, setWarehouseItemData] = useState([]);
 
     const getWarehouses = () =>{
         api.get("/warehouses").then((response) =>{
@@ -65,6 +67,18 @@ function Warehouse() {
         }
     }
 
+    const handleGetItemsByWarehouseId = (warehouseId) =>{
+        api.get(`/warehouses/warehouse/${warehouseId}`).then((response) =>{
+            if(response.status === 200 && response.data){
+                console.log(warehouseItemData);
+                setWarehouseItemData(response.data);
+                //setExpandedWarehouse(response.data);
+            }
+        }).catch((error) =>{
+            console.log(error);
+        })
+    }
+
     const handleEditModalOpen = (warehouse) =>{
         
         setEditingWarehouse(warehouse);
@@ -83,8 +97,25 @@ function Warehouse() {
     }
 
     const handleExpandWarehouse = (warehouseId) => {
-        setExpandedWarehouse(expandedWarehouse === warehouseId ? null : warehouseId);
-      };
+        if(expandedWarehouse === warehouseId){
+            setExpandedWarehouse(null);
+        }else{
+            handleGetItemsByWarehouseId(warehouseId);
+            setExpandedWarehouse(warehouseId);
+        }
+        //setExpandedWarehouse(expandedWarehouse === warehouseId ? null : warehouseId);
+    };
+
+    const filteredItems = warehouseItemData.flatMap((obj) =>
+      obj.inventories
+        .filter((item) => item.id.warehouseId === expandedWarehouse)
+        .map((item) => ({
+            itemId: obj.id,
+            itemName: obj.name,
+            quantity: item.quantity
+        }))
+    );
+
 
     useEffect(()=>{
         getWarehouses();
@@ -120,14 +151,7 @@ function Warehouse() {
                             </div>
                         </div>
                         {expandedWarehouse === warehouse.id && (
-                            <div className="mt-3">
-                                <h5>Items:</h5>
-                                <ul>
-                                    {warehouse.inventories?.map((item, index)=>(
-                                        <li key={index}>{item.id.itemId}</li>
-                                    ))}
-                                </ul>
-                            </div>
+                            <WarehouseItemTable filteredItems={filteredItems}/>
                         )}
                     </Card.Body>
 
