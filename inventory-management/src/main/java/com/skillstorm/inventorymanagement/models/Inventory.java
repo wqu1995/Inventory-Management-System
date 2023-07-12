@@ -13,15 +13,13 @@ public class Inventory {
 
     @ManyToOne
     @MapsId("warehouseId")
-    @JsonBackReference
-
+    @JsonBackReference("warehouse")
     //@JoinColumn(name = "warehouse_id")
     private Warehouse warehouse;
 
     @ManyToOne
     @MapsId("itemId")
-    @JsonBackReference
-
+    @JsonBackReference("item")
     //@JoinColumn(name = "item_id")
     private Item item;
 

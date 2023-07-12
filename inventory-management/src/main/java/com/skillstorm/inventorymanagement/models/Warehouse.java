@@ -33,7 +33,7 @@ public class Warehouse {
     private int capacity;
 
     @OneToMany(mappedBy = "warehouse")
-    @JsonManagedReference
+    @JsonManagedReference("warehouse")
     private Set<Inventory> inventories;
 
     public Warehouse() {

@@ -31,7 +31,7 @@ public class Item {
 
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
-   // @JsonIgnore
+    @JsonManagedReference("item")
     private Set<Inventory> inventories;
 
     public Item() {
