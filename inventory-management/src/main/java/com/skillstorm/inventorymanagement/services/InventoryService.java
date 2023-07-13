@@ -1,6 +1,7 @@
 package com.skillstorm.inventorymanagement.services;
 
 import com.skillstorm.inventorymanagement.models.Inventory;
+import com.skillstorm.inventorymanagement.models.InventoryId;
 import com.skillstorm.inventorymanagement.models.Warehouse;
 import com.skillstorm.inventorymanagement.repositories.InventoryRepository;
 import com.skillstorm.inventorymanagement.repositories.WarehouseRepository;
@@ -56,7 +57,7 @@ public class InventoryService {
      * @param inventoryToBeDeleted the inventory to be deleted
      * @return the int
      */
-    public int deleteInventory(Inventory inventoryToBeDeleted) {
-        return inventoryRepository.costumeDeleteById(inventoryToBeDeleted.getId());
+    public int deleteInventory(InventoryId inventoryToBeDeleted) {
+        return inventoryRepository.costumeDeleteById(inventoryToBeDeleted);
     }
 }

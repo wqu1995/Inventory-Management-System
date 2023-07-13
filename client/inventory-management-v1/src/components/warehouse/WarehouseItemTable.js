@@ -61,6 +61,20 @@ function WarehouseItemTable({filteredItems, warehouseId, handleUpdate}) {
         setEditItem(null);
     }
 
+    const handleDeleteItem = (item) =>{
+        //console.log(warehouseToBeDeleted)
+        const confirmed = window.confirm('Are you sure you want to delete this entry?');
+        if(confirmed){
+
+            api.delete(`/inventories/deleteInventory/${item.warehouseId}/${item.itemId}`).then((response)=>{
+                handleUpdate();
+            }).catch((error)=>{
+                console.log(error);
+            })
+
+        }
+    }
+
     const handleChange = (e) =>{
         //console.log(e.target.value);
         if(e.target.value == 0){
@@ -141,7 +155,7 @@ function WarehouseItemTable({filteredItems, warehouseId, handleUpdate}) {
                             <td className="button-container">
                                 <Button variant="outline-secondary" size="sm" onClick={(e) => {e.stopPropagation();handleShowDetail(item)}}>Detail</Button>
                                 <Button variant="outline-primary" size="sm" onClick={(e) => {e.stopPropagation();handleEditItem(item)}}>Edit</Button>
-                                <Button variant="outline-danger" size="sm">Delete</Button>
+                                <Button variant="outline-danger" size="sm" onClick={(e) => {e.stopPropagation();handleDeleteItem(item)}}>Delete</Button>
 
                             </td>
                         </tr>

@@ -64,9 +64,11 @@ public class InventoryController {
      * @param inventoryToBeDeleted the inventory to be deleted
      * @return the response entity
      */
-    @DeleteMapping("/deleteInventory")
-    public ResponseEntity<Integer> deleteInventory(@RequestBody Inventory inventoryToBeDeleted){
-        int rowAffected = inventoryService.deleteInventory(inventoryToBeDeleted);
+    @DeleteMapping("/deleteInventory/{warehouseId}/{itemId}")
+    public ResponseEntity<Integer> deleteInventory(@PathVariable int warehouseId, @PathVariable int itemId){
+        System.out.println(warehouseId+" "+itemId);
+
+        int rowAffected = inventoryService.deleteInventory(new InventoryId(warehouseId, itemId));
 
         return new ResponseEntity<>(rowAffected, HttpStatus.OK);
     }
