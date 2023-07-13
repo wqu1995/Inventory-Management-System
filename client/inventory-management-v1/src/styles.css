@@ -93,3 +93,13 @@ margin: 0;
   justify-content: center;
   gap: 8px;
 }
+
+.input-container {
+  display: flex;
+  align-items: center;
+  gap: 8px; 
+}
+
+.input-container input[type="text"] {
+  margin-right: 8px; 
+}
