@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {Alert, Button, Table } from 'react-bootstrap';
+import {Alert, Button, Table, Form } from 'react-bootstrap';
 import api from '../../api/axiosConfig';
 import AddInventoryModal from './AddInventoryModal';
 
@@ -12,6 +12,10 @@ function Inventory() {
     const [alertMessage, setAlertMessage] = useState('');
 
     const [showAddInvModal, setShowInvModal] = useState(false);
+    const [isEditing, setIsEditing] = useState(null);
+    const [updatedQuant, setUpdatedQuant] = useState('');
+
+    const [quantityError, setQuantityError] = useState('');
 
     const getInventory = () =>{
         api.get("/inventories").then((response)=>{
@@ -69,6 +73,79 @@ function Inventory() {
         setShowInvModal(true);
     }
 
+    const handleEditInv = (inv) =>{
+        setIsEditing(inv);
+        setUpdatedQuant(inv.quantity);
+    }
+
+    const handleUpdateInv = (e) =>{
+        e.preventDefault();
+        console.log(isEditing);
+        console.log(updatedQuant);
+
+        const quantity = updatedQuant != '' ? Number(updatedQuant) : ''
+        if(!quantity || quantity<1){
+            console.log("in here");
+            setQuantityError('Quantity must be greater than 1');
+            return;
+        }
+
+        const reqItem = items.find((i) => i.id === isEditing.id.itemId);
+        console.log(reqItem)
+
+        const requestData = {
+            id:{
+                itemId : isEditing.id.itemId,
+                warehouseId: isEditing.id.warehouseId
+            },
+            item: reqItem,
+            warehouse:{
+                id: isEditing.id.warehouseId
+            },
+            quantity : updatedQuant
+        }
+        console.log(requestData)
+        api.put("/inventories/updateInventory", requestData).then((response)=>{
+            if(response.status===202 && response.data){
+                setInventory((prevInventory)=>{
+                    const index = prevInventory.findIndex(
+                        (inv) => inv.id.warehouseId === response.data.id.warehouseId && inv.id.itemId === response.data.id.itemId
+                    );
+
+                    if(index !== -1){
+                        const updatedInventoryArray = [... prevInventory];
+                        updatedInventoryArray[index] = response.data;
+                        return updatedInventoryArray
+                    }else{
+                        return prevInventory;
+                    }
+                })
+                setAlertMessage('');
+            }
+        }).catch((error)=>{
+            if (error.response && error.response.status === 400) {
+                //Alert(error.response.data);
+              setAlertMessage(error.response.data);
+            } else {
+              console.log(error);
+            }
+        })
+
+        setQuantityError('')
+        setUpdatedQuant(null);
+        setIsEditing(null)
+    }
+
+    const handleCancelEdit = () =>{
+        setIsEditing(null);
+        setUpdatedQuant('');
+    }
+
+    const handleChange = (e) =>{
+        const value = e.target.value != '' ? e.target.value : '';
+        setUpdatedQuant(value);
+    }
+
     const getWarehouseName = (warehouseId) =>{
         const wh = warehouse.find((x) => x.id === warehouseId);
         return wh ? wh.name : ''; 
@@ -109,7 +186,25 @@ function Inventory() {
                         <tr key={index}>
                             <td>{getWarehouseName(inv.id.warehouseId)}</td>
                             <td>{getItemName(inv.id.itemId)}</td>
-                            <td>{inv.quantity}</td>
+                            <td>
+                                {isEditing === inv ? (
+                                    <div className = "d-flex">
+                                        <input
+                                            type = "text"
+                                            value = {updatedQuant}
+                                            onChange = {(e) =>{handleChange(e)}}
+                                        />
+
+                                        
+                                        <Button variant="outline-primary" size="sm" onClick={(e) => {e.stopPropagation();handleUpdateInv(e)}}>Update!</Button>
+                                        <Button variant="outline-secondary" size="sm" onClick={(e) => {e.stopPropagation();handleCancelEdit()}}>Cancel</Button>
+
+                                    </div>
+                                ) :(inv.quantity)}
+                                {isEditing ===inv && !!quantityError &&(
+                                    <div className="text-danger">{quantityError}</div>
+                                )}
+                            </td>
                             <td className="button-container">
                                 <Button variant="outline-primary" size="sm" onClick={(e) => {e.stopPropagation();handleEditInv(inv)}}>Edit</Button>
                                 <Button variant="outline-danger" size="sm" onClick={(e) => {e.stopPropagation();handleDeleteInv(inv)}}>Delete</Button>
