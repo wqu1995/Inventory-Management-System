@@ -23,6 +23,6 @@ CREATE TABLE `inventories` (
   PRIMARY KEY (`item_id`, `warehouse_id`)
 );
 
-ALTER TABLE `inventories` ADD FOREIGN KEY (`item_id`) REFERENCES `items` (`id`);
+ALTER TABLE `inventories` ADD FOREIGN KEY (`item_id`) REFERENCES `items` (`id`) ON DELETE CASCADE;
 
-ALTER TABLE `inventories` ADD FOREIGN KEY (`warehouse_id`) REFERENCES `warehouses` (`id`);
+ALTER TABLE `inventories` ADD FOREIGN KEY (`warehouse_id`) REFERENCES `warehouses` (`id`)ON DELETE CASCADE;
