@@ -27,7 +27,7 @@ insert into items (name, description, size) values ('Hawai''i Korthal Mistletoe'
 
 insert into inventories (item_id, warehouse_id, quantity) values (12, 1, 7);
 
-insert into inventories (item_id, warehouse_id, quantity) values (3, 2, 3);
+insert into inventories (item_id, warehouse_id, quantity) values (3, 2, 4);
 insert into inventories (item_id, warehouse_id, quantity) values (5, 2, 1);
 
 insert into inventories (item_id, warehouse_id, quantity) values (19, 3, 1);

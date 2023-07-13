@@ -38,11 +38,24 @@ public class InventoryService {
 
         Warehouse warehouse = warehouseRepository.findById(inventoryToBeUpdated.getId().getWarehouseId()).orElse(null);
 
+
         if(warehouse != null){
-            System.out.println(warehouse.getSize()+" "+inventoryToBeUpdated.getItem()+" "+ inventoryToBeUpdated.getQuantity());
-            int increment = inventoryToBeUpdated.getItem().getSize() * inventoryToBeUpdated.getQuantity();
+            Inventory oldInv = inventoryRepository.findById(inventoryToBeUpdated.getId()).orElse(null);
+            int increment;
+            if(oldInv != null){
+                //System.out.println(oldInv.getQuantity()+" "+inventoryToBeUpdated.getQuantity());
+                int newQuant = inventoryToBeUpdated.getQuantity();
+                int oldQuant = oldInv.getQuantity();
+
+                increment = inventoryToBeUpdated.getItem().getSize() *(newQuant-oldQuant);
+
+            }else{
+                increment = inventoryToBeUpdated.getItem().getSize() * inventoryToBeUpdated.getQuantity();
+            }
+
+            //System.out.println(warehouse.getSize()+" "+inventoryToBeUpdated.getItem()+" "+ inventoryToBeUpdated.getQuantity());
             warehouse.setSize(warehouse.getSize()+increment);
-            System.out.println(warehouse.getSize());
+            //System.out.println(warehouse.getSize());
 
             warehouseRepository.save(warehouse);
         }
@@ -58,6 +71,16 @@ public class InventoryService {
      * @return the int
      */
     public int deleteInventory(InventoryId inventoryToBeDeleted) {
+        Inventory inv = inventoryRepository.findById(inventoryToBeDeleted).orElse(null);
+        if(inv!=null){
+            Warehouse warehouse = warehouseRepository.findById(inv.getId().getWarehouseId()).orElse(null);
+            if(warehouse!=null){
+                //update the size
+                warehouse.setSize(warehouse.getSize()-inv.getItem().getSize()*inv.getQuantity());
+                warehouseRepository.save(warehouse);
+            }
+            //System.out.println(inv);
+        }
         return inventoryRepository.costumeDeleteById(inventoryToBeDeleted);
     }
 }

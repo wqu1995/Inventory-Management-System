@@ -12,6 +12,8 @@ function AddItemToWarehouseModal({filteredItems, showModal, handleClose, handleA
         quantity: 0,
       });
     const[itemData, setItemData] = useState([]);
+
+    const [quantityError, setQuantityError] = useState('');
     
     const getItems = () =>{
         api.get("/items").then((response) =>{
@@ -30,8 +32,13 @@ function AddItemToWarehouseModal({filteredItems, showModal, handleClose, handleA
     },[])
 
     const handleSubmit =(e) =>{
+        if(!addItemData.quantity || addItemData.quantity<1){
+            setQuantityError('Quantity must be greater than 1');
+            return;
+        }
         e.preventDefault();
         handleAddItemToWarehouse(addItemData);
+        setQuantityError('');
         handleClose();
     }
     
@@ -80,9 +87,16 @@ function AddItemToWarehouseModal({filteredItems, showModal, handleClose, handleA
                                 <option key={item.id} value= {item.id}>
                                     {item.name}
                                 </option>
+                                
                             ))}
                         </Form.Control>
                     </Form.Group>
+
+                    <Form.Group>
+                        <Form.Label>Item Size</Form.Label>
+                        <Form.Control value = {addItemData.item?.size || ''} disabled/>
+                    </Form.Group>
+
                     <Form.Group>
                         <Form.Label>Quantity</Form.Label>
                         <Form.Control 
@@ -91,7 +105,11 @@ function AddItemToWarehouseModal({filteredItems, showModal, handleClose, handleA
                             onChange={(e) => handleChange('quantity', e)}
                             onClick={(e) => e.stopPropagation()}
                             disabled={!addItemData.item}
+                            isInvalid={!!quantityError}
                             />
+                            {quantityError&&(
+                                <Form.Control.Feedback type='invalid'>{quantityError}</Form.Control.Feedback>
+                            )}
                     </Form.Group>
                 </Form>
             </Modal.Body>

@@ -11,6 +11,7 @@ function WarehouseItemTable({filteredItems, warehouseId, handleUpdate}) {
     const [detailItem, setDetailItem] = useState(null);
     const [editItem, setEditItem] = useState(null);
     const [newQuantity, setNewQuantity] = useState(1);
+    const [quantityError, setQuantityError] = useState('');
 
     const handleAddItemClick = () =>{
         setShowAddItemModal(true);
@@ -28,11 +29,17 @@ function WarehouseItemTable({filteredItems, warehouseId, handleUpdate}) {
         setNewQuantity(item.quantity)
         setEditItem(item);
     }
-    const handleSaveEditItem = () =>{
+    const handleSaveEditItem = (e) =>{
+        if(!newQuantity || newQuantity <1){
+            setQuantityError('Quantity must be greater than 1');
+            return;
+        }
 
+        e.preventDefault();
         //console.log(editItem);
         //console.log(newQuantity);
         if(editItem && newQuantity){
+            setQuantityError('');
             const requestData = {
                 id:{
                     warehouseId:editItem.warehouseId,
@@ -76,11 +83,9 @@ function WarehouseItemTable({filteredItems, warehouseId, handleUpdate}) {
     }
 
     const handleChange = (e) =>{
-        //console.log(e.target.value);
-        if(e.target.value == 0){
-            e.target.value = 1
-        }
+
         setNewQuantity(e.target.value)
+        //console.log(e.target.value);
     }
 
     const handleAddItemToWarehouse = (addItemData) =>{
@@ -196,11 +201,14 @@ function WarehouseItemTable({filteredItems, warehouseId, handleUpdate}) {
                             <Form.Label>Item Quantity</Form.Label>
                             <Form.Control 
                                 type = 'number' 
-                                value={newQuantity || 0} 
-                                min={1} 
+                                value={newQuantity || ''} 
                                 onClick={(e) => e.stopPropagation()}
                                 onChange={(e) => handleChange(e)}
+                                isInvalid={!!quantityError}
                             />
+                            {quantityError &&(
+                                <Form.Control.Feedback type="invalid">{quantityError}</Form.Control.Feedback>
+                            )}
                         </Form.Group>
                     </Form>
                 </Modal.Body>

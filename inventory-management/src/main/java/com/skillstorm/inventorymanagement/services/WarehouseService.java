@@ -60,7 +60,6 @@ public class WarehouseService {
 //        }
 //        return null;
 
-        System.out.println(id);
         Warehouse warehouse = warehouseRepo.findById(id).orElse(null);
         if(warehouse!=null){
             //System.out.println(warehouse.toString());

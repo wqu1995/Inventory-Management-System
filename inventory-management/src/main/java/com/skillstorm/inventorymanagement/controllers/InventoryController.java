@@ -61,7 +61,8 @@ public class InventoryController {
     /**
      * Method to handle DELETE("/inventories/deleteInventory") request
      *
-     * @param inventoryToBeDeleted the inventory to be deleted
+     * @param warehouseId the warehouse id
+     * @param itemId      the item id
      * @return the response entity
      */
     @DeleteMapping("/deleteInventory/{warehouseId}/{itemId}")
