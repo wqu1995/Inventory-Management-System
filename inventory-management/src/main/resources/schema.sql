@@ -1,6 +1,6 @@
+drop table if exists inventories;
 drop table if exists warehouses;
 drop table if exists items;
-drop table if exists inventories;
 
 CREATE TABLE `warehouses` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
@@ -23,6 +23,6 @@ CREATE TABLE `inventories` (
   PRIMARY KEY (`item_id`, `warehouse_id`)
 );
 
-ALTER TABLE `inventories` ADD FOREIGN KEY (`item_id`) REFERENCES `items` (`id`);
+ALTER TABLE `inventories` ADD FOREIGN KEY (`item_id`) REFERENCES `items` (`id`) ON DELETE CASCADE;
 
-ALTER TABLE `inventories` ADD FOREIGN KEY (`warehouse_id`) REFERENCES `warehouses` (`id`);
+ALTER TABLE `inventories` ADD FOREIGN KEY (`warehouse_id`) REFERENCES `warehouses` (`id`)ON DELETE CASCADE;

@@ -1,11 +1,16 @@
 package com.skillstorm.inventorymanagement.services;
 
+import com.skillstorm.inventorymanagement.models.Inventory;
 import com.skillstorm.inventorymanagement.models.Item;
+import com.skillstorm.inventorymanagement.models.Warehouse;
 import com.skillstorm.inventorymanagement.repositories.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemService {
@@ -41,5 +46,16 @@ public class ItemService {
      */
     public int deleteItem(Item itemToBeDeleted) {
         return itemRepository.costumeDeleteById(itemToBeDeleted.getId());
+    }
+
+    public Set<Warehouse> getWarehousesByItemId(int id) {
+        Item item = itemRepository.findById(id).orElse(null);
+        if (item != null) {
+            Set<Inventory> inventories = item.getInventories();
+            return inventories.stream()
+                    .map(Inventory::getWarehouse)
+                    .collect(Collectors.toSet());
+        }
+        return new HashSet<>();
     }
 }

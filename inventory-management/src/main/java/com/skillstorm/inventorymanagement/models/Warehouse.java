@@ -1,7 +1,12 @@
 package com.skillstorm.inventorymanagement.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * The type Warehouse.
@@ -27,6 +32,10 @@ public class Warehouse {
     @Column
     private int capacity;
 
+    @OneToMany(mappedBy = "warehouse")
+    @JsonManagedReference("warehouse")
+    private Set<Inventory> inventories;
+
     public Warehouse() {
     }
 
@@ -43,6 +52,23 @@ public class Warehouse {
         this.location = location;
         this.size = size;
         this.capacity = capacity;
+    }
+
+    public Warehouse(int id, String name, String location, int size, int capacity, Set<Inventory> inventories) {
+        this.id = id;
+        this.name = name;
+        this.location = location;
+        this.size = size;
+        this.capacity = capacity;
+        this.inventories = inventories;
+    }
+
+    public Set<Inventory> getInventories() {
+        return inventories;
+    }
+
+    public void setInventories(Set<Inventory> inventories) {
+        this.inventories = inventories;
     }
 
     public int getId() {

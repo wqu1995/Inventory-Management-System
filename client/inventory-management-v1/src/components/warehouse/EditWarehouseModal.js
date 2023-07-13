@@ -4,6 +4,7 @@ import {Modal, Button, Form} from 'react-bootstrap';
 function EditWarehouseModal({ show, handleClose, warehouse, handleEditWarehouse }) {
 
     const [editWarehouseData, setEditWarehouseData] = useState(undefined);
+    const [quantityError, setQuantityError] = useState('');
 
     useEffect(()=>{
         //console.log(warehouse);
@@ -28,9 +29,17 @@ function EditWarehouseModal({ show, handleClose, warehouse, handleEditWarehouse 
     };
 
     const handleSubmit = (e) =>{
+        if(!editWarehouseData.capacity || editWarehouseData.capacity<1){
+            setQuantityError('Quantity must be greater than 1');
+            return;
+        }else if(editWarehouseData.capacity < warehouse.size){
+            setQuantityError('Quantity must be greater warehosue size');
+            return;
+        }
         //console.log(editWarehouseData)
         e.preventDefault();
         handleEditWarehouse(editWarehouseData);
+        setQuantityError('');
         handleClose();
     };
 
@@ -62,8 +71,19 @@ function EditWarehouseModal({ show, handleClose, warehouse, handleEditWarehouse 
                     <Form.Group className='mb-3'>
                         <Form.Label>Warehouse Capacity</Form.Label>
                         {editWarehouseData &&(
-                            <Form.Control type="number" value={editWarehouseData.capacity} onChange={(e)=>handleChange('capacity', e)} required/>
+                            <Form.Control 
+                            type="number" 
+                            value={editWarehouseData.capacity} 
+                            onChange={(e)=>handleChange('capacity', e)} 
+                            isInvalid={!!quantityError}
+                            
+                            required
+                            />
+                            
                         )}
+                        {quantityError&&(
+                                <Form.Control.Feedback type='invalid'>{quantityError}</Form.Control.Feedback>
+                            )}
                     </Form.Group>
                 </Form>
             </Modal.Body>

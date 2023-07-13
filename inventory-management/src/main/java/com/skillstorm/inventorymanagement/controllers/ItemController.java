@@ -1,6 +1,7 @@
 package com.skillstorm.inventorymanagement.controllers;
 
 import com.skillstorm.inventorymanagement.models.Item;
+import com.skillstorm.inventorymanagement.models.Warehouse;
 import com.skillstorm.inventorymanagement.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,9 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/items")
+@CrossOrigin
 public class ItemController {
 
     @Autowired
@@ -60,12 +63,18 @@ public class ItemController {
      * @param itemToBeDeleted the item to be deleted
      * @return the response entity
      */
-    @DeleteMapping("deleteItem")
+    @DeleteMapping("/deleteItem")
     public ResponseEntity<Integer> deleteItem(@RequestBody Item itemToBeDeleted){
         int rowsAffected = itemService.deleteItem(itemToBeDeleted);
 
         return new ResponseEntity<>(rowsAffected, HttpStatus.OK);
     }
 
+    @GetMapping("/item/{id}")
+    public ResponseEntity<Set<Warehouse>> getWarehousesByItemId(@PathVariable int id){
+        Set<Warehouse> result = itemService.getWarehousesByItemId(id);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 
 }

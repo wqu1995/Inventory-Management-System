@@ -1,6 +1,8 @@
 package com.skillstorm.inventorymanagement.controllers;
 
+import com.skillstorm.inventorymanagement.models.Item;
 import com.skillstorm.inventorymanagement.models.Warehouse;
+import com.skillstorm.inventorymanagement.models.WarehouseDTO;
 import com.skillstorm.inventorymanagement.services.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/warehouses")
@@ -70,6 +73,13 @@ public class WarehouseController {
         int response = warehouseService.deleteWarehouse(warehouseId);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/warehouse/{id}")
+    public ResponseEntity<Set<Item>> getItemsByWarehouseId(@PathVariable int id){
+        Set<Item> result = warehouseService.getItemsByWarehouseId(id);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 }
