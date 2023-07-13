@@ -32,7 +32,18 @@ function Items() {
         //console.log(addItemData);
     }
 
-
+    const handleDeleteItem = (deleteItemData) =>{
+        const confirm = window.confirm('Are you sure you want to delete this item?');
+        if(confirm){
+            api.delete(`/items/deleteItem/${deleteItemData.id}`).then((response) =>{
+                if(response.status === 200){
+                    setItems(prevItems => prevItems.filter(item => item.id !== deleteItemData.id))
+                }
+            }).catch((error) =>{
+                console.log(error);
+            })
+        }
+    }
 
     useEffect(()=>{
         getItems();
@@ -60,7 +71,7 @@ function Items() {
                             <td>{item.description}</td>
                             <td>{item.size}</td>
                             <td className="button-container">
-                                <Button variant="outline-danger" size="sm" onClick={(e) => {e.stopPropagation();handleDelete(item)}}>Delete</Button>
+                                <Button variant="outline-danger" size="sm" onClick={(e) => {e.stopPropagation();handleDeleteItem(item)}}>Delete</Button>
 
                             </td>
                         </tr>

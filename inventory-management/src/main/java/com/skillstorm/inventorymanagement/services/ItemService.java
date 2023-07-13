@@ -3,7 +3,9 @@ package com.skillstorm.inventorymanagement.services;
 import com.skillstorm.inventorymanagement.models.Inventory;
 import com.skillstorm.inventorymanagement.models.Item;
 import com.skillstorm.inventorymanagement.models.Warehouse;
+import com.skillstorm.inventorymanagement.repositories.InventoryRepository;
 import com.skillstorm.inventorymanagement.repositories.ItemRepository;
+import com.skillstorm.inventorymanagement.repositories.WarehouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,12 @@ import java.util.stream.Collectors;
 public class ItemService {
     @Autowired
     ItemRepository itemRepository;
+
+    @Autowired
+    InventoryRepository inventoryRepository;
+
+    @Autowired
+    WarehouseRepository warehouseRepository;
 
     /**
      * Find all items from the database.
@@ -44,8 +52,22 @@ public class ItemService {
      * @param itemToBeDeleted the item to be deleted
      * @return the number of rows deleted
      */
-    public int deleteItem(Item itemToBeDeleted) {
-        return itemRepository.costumeDeleteById(itemToBeDeleted.getId());
+    public int deleteItem(Integer itemToBeDeleted) {
+
+        Item item = itemRepository.findById(itemToBeDeleted).orElse(null);
+
+        if(item!=null){
+            List<Inventory> inv = inventoryRepository.findAllByItem_Id(itemToBeDeleted);
+            for(Inventory i : inv){
+                Warehouse warehouse = i.getWarehouse();
+                int decrement = item.getSize() * i.getQuantity();
+                warehouse.setSize(warehouse.getSize()-decrement);
+                warehouseRepository.save(warehouse);
+            }
+        }
+
+
+        return itemRepository.costumeDeleteById(itemToBeDeleted);
     }
 
     public Set<Warehouse> getWarehousesByItemId(int id) {
