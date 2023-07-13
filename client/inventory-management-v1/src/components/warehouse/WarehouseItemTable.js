@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
-import { Modal, Table } from 'react-bootstrap';
+import { Form, Modal, Table } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import AddItemToWarehouseModal from './AddItemToWarehouseModal';
 import api from '../../api/axiosConfig';
 
 
 
-function WarehouseItemTable({filteredItems, warehouseId, handleAddItem}) {
+function WarehouseItemTable({filteredItems, warehouseId, handleUpdate}) {
     const [showAddItemModal, setShowAddItemModal] = useState(false);
     const [detailItem, setDetailItem] = useState(null);
+    const [editItem, setEditItem] = useState(null);
+    const [newQuantity, setNewQuantity] = useState(1);
 
     const handleAddItemClick = () =>{
         setShowAddItemModal(true);
@@ -22,10 +24,55 @@ function WarehouseItemTable({filteredItems, warehouseId, handleAddItem}) {
 
     }
 
+    const handleEditItem = (item) =>{
+        setNewQuantity(item.quantity)
+        setEditItem(item);
+    }
+    const handleSaveEditItem = () =>{
+
+        //console.log(editItem);
+        //console.log(newQuantity);
+        if(editItem && newQuantity){
+            const requestData = {
+                id:{
+                    warehouseId:editItem.warehouseId,
+                    itemId: editItem.itemId
+                },
+                item:{
+                    id: editItem.itemId,
+                    name: editItem.itemName,
+                    description: editItem.itemDescription,
+                    size: editItem.itemSize
+                },
+                warehouse:{
+                    id: editItem.warehouseId
+                },
+                quantity: newQuantity
+            }
+            api.post("/inventories/addInventory", requestData).then((response)=>{
+                if(response.status===201 || response.status===202){
+                    handleUpdate();
+                }
+            }).catch((error)=>{
+                console.log(error);
+            })
+            //console.log(requestData);
+        }
+        setEditItem(null);
+    }
+
+    const handleChange = (e) =>{
+        //console.log(e.target.value);
+        if(e.target.value == 0){
+            e.target.value = 1
+        }
+        setNewQuantity(e.target.value)
+    }
+
     const handleAddItemToWarehouse = (addItemData) =>{
         //console.log(filteredItems)
         if(addItemData){
-            console.log(addItemData);
+            //console.log(addItemData);
             const requestData ={
                 id:{
                     warehouseId:warehouseId,
@@ -41,7 +88,7 @@ function WarehouseItemTable({filteredItems, warehouseId, handleAddItem}) {
 
             api.post("/inventories/addInventory", requestData).then((response)=>{
                 if(response.status===201 || response.status===202){
-                    handleAddItem();
+                    handleUpdate();
                 }
             }).catch((error)=>{
                 console.log(error);
@@ -93,7 +140,7 @@ function WarehouseItemTable({filteredItems, warehouseId, handleAddItem}) {
                             <td>{item.quantity}</td>
                             <td className="button-container">
                                 <Button variant="outline-secondary" size="sm" onClick={(e) => {e.stopPropagation();handleShowDetail(item)}}>Detail</Button>
-                                <Button variant="outline-primary" size="sm">Edit</Button>
+                                <Button variant="outline-primary" size="sm" onClick={(e) => {e.stopPropagation();handleEditItem(item)}}>Edit</Button>
                                 <Button variant="outline-danger" size="sm">Delete</Button>
 
                             </td>
@@ -113,12 +160,40 @@ function WarehouseItemTable({filteredItems, warehouseId, handleAddItem}) {
                             <br></br>
                             <h5>Id: {detailItem.itemId}</h5>
                             <h5>Drescription: {detailItem.itemDescription}</h5>
+                            <h5>Size: {detailItem.itemSize}</h5>
                             <h5>Quantity: {detailItem.quantity}</h5>
                         </div>
                     )}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant='secondary' onClick={handleDetailModalClose}>Close</Button>
+                </Modal.Footer>
+            </Modal>
+
+            <Modal show={editItem !== null} onHide={() => setEditItem(null)} onClick={(e) => e.stopPropagation()}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Edit Item</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form>
+                        <Form.Group>
+                            <Form.Label>Item Name</Form.Label>
+                            <Form.Control value={editItem?.itemName || ''} disabled></Form.Control>
+                            <Form.Label>Item Quantity</Form.Label>
+                            <Form.Control 
+                                type = 'number' 
+                                value={newQuantity || 0} 
+                                min={1} 
+                                onClick={(e) => e.stopPropagation()}
+                                onChange={(e) => handleChange(e)}
+                            />
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+
+                <Modal.Footer>
+                    <Button variant='primary' onClick={handleSaveEditItem}>Update!</Button>
+                    <Button variant='secondary' onClick={() => setEditItem(null)}>Cancel</Button>
                 </Modal.Footer>
             </Modal>
 

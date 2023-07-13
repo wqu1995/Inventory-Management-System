@@ -116,7 +116,8 @@ function Warehouse() {
             itemId: obj.id,
             itemName: obj.name,
             quantity: item.quantity,
-            itemDescription: obj.description
+            itemDescription: obj.description,
+            itemSize:obj.size
         }))
     );
 
@@ -134,7 +135,7 @@ function Warehouse() {
         }
       };
 
-    const handleAddItem = () =>{
+    const handleUpdate = () =>{
         getWarehouses();
         handleGetItemsByWarehouseId(expandedWarehouse);
     }
@@ -170,7 +171,7 @@ function Warehouse() {
                             <WarehouseItemTable 
                             filteredItems={filteredItems}
                             warehouseId = {expandedWarehouse}
-                            handleAddItem={handleAddItem}
+                            handleUpdate={handleUpdate}
                             />
                         )}
                     </Card.Body>
