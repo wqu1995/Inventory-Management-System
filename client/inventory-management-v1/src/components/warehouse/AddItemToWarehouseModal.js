@@ -6,10 +6,14 @@ import api from '../../api/axiosConfig';
 function AddItemToWarehouseModal({filteredItems, showModal, handleClose, handleAddItemToWarehouse}) {
 
     const modalRef = useRef(null);
+    const initAddItemData = {
+        item: null,
+        quantity: ''
+    }
 
     const[addItemData, setAddItemData] = useState({
         item: null,
-        quantity: 0,
+        quantity: ''
       });
     const[itemData, setItemData] = useState([]);
 
@@ -38,6 +42,7 @@ function AddItemToWarehouseModal({filteredItems, showModal, handleClose, handleA
         }
         e.preventDefault();
         handleAddItemToWarehouse(addItemData);
+        setAddItemData(initAddItemData);
         setQuantityError('');
         handleClose();
     }
@@ -64,9 +69,10 @@ function AddItemToWarehouseModal({filteredItems, showModal, handleClose, handleA
               }));
             }
           } else {
+            const value = e.target.value !== '' ? Number(e.target.value) : '';
             setAddItemData((prevData) => ({
               ...prevData,
-              [fieldName]: Number(e.target.value)
+              [fieldName]: value
             }));
           }
         //console.log(addItemData);
@@ -100,7 +106,6 @@ function AddItemToWarehouseModal({filteredItems, showModal, handleClose, handleA
                     <Form.Group>
                         <Form.Label>Quantity</Form.Label>
                         <Form.Control 
-                            type='number'
                             value={addItemData.quantity}
                             onChange={(e) => handleChange('quantity', e)}
                             onClick={(e) => e.stopPropagation()}

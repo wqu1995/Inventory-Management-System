@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Form, Modal, Table } from 'react-bootstrap';
+import { Alert, Form, Modal, Table } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import AddItemToWarehouseModal from './AddItemToWarehouseModal';
 import api from '../../api/axiosConfig';
@@ -12,6 +12,7 @@ function WarehouseItemTable({filteredItems, warehouseId, handleUpdate}) {
     const [editItem, setEditItem] = useState(null);
     const [newQuantity, setNewQuantity] = useState(1);
     const [quantityError, setQuantityError] = useState('');
+    const [alertMessage, setAlertMessage] = useState('');
 
     const handleAddItemClick = () =>{
         setShowAddItemModal(true);
@@ -59,9 +60,15 @@ function WarehouseItemTable({filteredItems, warehouseId, handleUpdate}) {
             api.post("/inventories/addInventory", requestData).then((response)=>{
                 if(response.status===201 || response.status===202){
                     handleUpdate();
+                    setAlertMessage('');
                 }
             }).catch((error)=>{
-                console.log(error);
+                if (error.response && error.response.status === 400) {
+                    //Alert(error.response.data);
+                  setAlertMessage(error.response.data);
+                } else {
+                  console.log(error);
+                }
             })
             //console.log(requestData);
         }
@@ -108,10 +115,16 @@ function WarehouseItemTable({filteredItems, warehouseId, handleUpdate}) {
             api.post("/inventories/addInventory", requestData).then((response)=>{
                 if(response.status===201 || response.status===202){
                     handleUpdate();
+                    setAlertMessage('');
                 }
-            }).catch((error)=>{
-                console.log(error);
-            })
+            }).catch((error) => {
+                if (error.response && error.response.status === 400) {
+                    //Alert(error.response.data);
+                  setAlertMessage(error.response.data);
+                } else {
+                  console.log(error);
+                }
+              });
         }
 
     }
@@ -132,6 +145,10 @@ function WarehouseItemTable({filteredItems, warehouseId, handleUpdate}) {
                 handleClose={setShowAddItemModal}
                 handleAddItemToWarehouse = {handleAddItemToWarehouse}
                 />
+
+                <div>
+                    {alertMessage && <Alert>{alertMessage}</Alert>}
+                </div>
             </div>
 
         )
@@ -225,6 +242,10 @@ function WarehouseItemTable({filteredItems, warehouseId, handleUpdate}) {
                 handleClose={setShowAddItemModal}
                 handleAddItemToWarehouse = {handleAddItemToWarehouse}
             />
+
+            <div>
+                {alertMessage && <Alert>{alertMessage}</Alert>}
+            </div>
         </div>
     )
 }

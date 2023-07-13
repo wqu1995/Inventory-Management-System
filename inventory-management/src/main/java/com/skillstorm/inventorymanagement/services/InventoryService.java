@@ -6,6 +6,8 @@ import com.skillstorm.inventorymanagement.models.Warehouse;
 import com.skillstorm.inventorymanagement.repositories.InventoryRepository;
 import com.skillstorm.inventorymanagement.repositories.WarehouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,7 +36,7 @@ public class InventoryService {
      * @param inventoryToBeUpdated the inventory to be updated
      * @return the inventory
      */
-    public Inventory addInventory(Inventory inventoryToBeUpdated) {
+    public ResponseEntity<Object> addInventory(Inventory inventoryToBeUpdated) {
 
         Warehouse warehouse = warehouseRepository.findById(inventoryToBeUpdated.getId().getWarehouseId()).orElse(null);
 
@@ -52,15 +54,22 @@ public class InventoryService {
             }else{
                 increment = inventoryToBeUpdated.getItem().getSize() * inventoryToBeUpdated.getQuantity();
             }
+            System.out.println(warehouse.getSize()+" "+increment+" "+ warehouse.getCapacity());
+            if(warehouse.getSize()+increment <= warehouse.getCapacity()){
+                warehouse.setSize(warehouse.getSize()+increment);
+                //System.out.println(warehouse.getSize());
 
-            //System.out.println(warehouse.getSize()+" "+inventoryToBeUpdated.getItem()+" "+ inventoryToBeUpdated.getQuantity());
-            warehouse.setSize(warehouse.getSize()+increment);
-            //System.out.println(warehouse.getSize());
+                warehouseRepository.save(warehouse);
+                Inventory res = inventoryRepository.save(inventoryToBeUpdated);
+                return ResponseEntity.ok(res);
 
-            warehouseRepository.save(warehouse);
+            }
+
+            //System.out.println(warehouse.getSize()+" "+inventoryToBeUpdated.getItem()+" "+ inventoryToBeUpdated.getQuantity())
         }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Exceeded warehouse capacity");
 
-        return inventoryRepository.save(inventoryToBeUpdated);
+
         //return inventoryRepository.save(inventoryToBeUpdated);
     }
 

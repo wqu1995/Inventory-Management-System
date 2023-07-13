@@ -71,7 +71,7 @@ function Warehouse() {
     const handleGetItemsByWarehouseId = (warehouseId) =>{
         api.get(`/warehouses/warehouse/${warehouseId}`).then((response) =>{
             if(response.status === 200 && response.data){
-                console.log(warehouseItemData);
+               // console.log(warehouseItemData);
                 setWarehouseItemData(response.data);
                 //setExpandedWarehouse(response.data);
             }
