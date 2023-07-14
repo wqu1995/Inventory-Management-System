@@ -12,7 +12,7 @@ const Header = () => {
   return (
     <Navbar bg="light" expand="lg" className="mb-3">
     <div >
-      <Navbar.Brand href='/'>Inventory Management System</Navbar.Brand>
+      <Navbar.Brand href='/'>Animal figure Inc</Navbar.Brand>
     </div>
     <Navbar.Toggle aria-controls="basic-navbar-nav" />
     <Navbar.Collapse id="basic-navbar-nav">
@@ -21,10 +21,10 @@ const Header = () => {
           Warehouses
         </Nav.Link>
         <Nav.Link as={Link} to="/items">
-          Items
+          Figures
         </Nav.Link>
         <Nav.Link as={Link} to="/inventory">
-          Inventory
+          Stocks
         </Nav.Link>
       </Nav>
     </Navbar.Collapse>

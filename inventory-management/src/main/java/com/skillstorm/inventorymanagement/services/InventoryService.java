@@ -54,7 +54,7 @@ public class InventoryService {
             }else{
                 increment = inventoryToBeUpdated.getItem().getSize() * inventoryToBeUpdated.getQuantity();
             }
-            System.out.println(warehouse.getSize()+" "+increment+" "+ warehouse.getCapacity());
+            //System.out.println(warehouse.getSize()+" "+increment+" "+ warehouse.getCapacity());
             if(warehouse.getSize()+increment <= warehouse.getCapacity()){
                 warehouse.setSize(warehouse.getSize()+increment);
                 //System.out.println(warehouse.getSize());

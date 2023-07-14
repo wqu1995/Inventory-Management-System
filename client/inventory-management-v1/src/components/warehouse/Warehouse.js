@@ -143,7 +143,7 @@ function Warehouse() {
     return (
         <div>
             <div className='d-flex justify-content-between align-items-center mb-3'>
-                <h1 className="text-dark">Warehouses</h1>
+                <h1 className="text-dark">Warhouses</h1>
                 <Button variant = "primary" className='custom-button' onClick={handleShowModal}>Add Warehouse</Button>
             </div>
 
