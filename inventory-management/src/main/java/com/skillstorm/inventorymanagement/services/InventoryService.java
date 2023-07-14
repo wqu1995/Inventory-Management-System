@@ -38,14 +38,17 @@ public class InventoryService {
      */
     public ResponseEntity<Object> addInventory(Inventory inventoryToBeUpdated) {
 
+        //get warehouse associated with the inventory
         Warehouse warehouse = warehouseRepository.findById(inventoryToBeUpdated.getId().getWarehouseId()).orElse(null);
 
 
         if(warehouse != null){
+            //check if an inventory entry is already existing in the database
             Inventory oldInv = inventoryRepository.findById(inventoryToBeUpdated.getId()).orElse(null);
             int increment;
+
+            //update the warehouse size accordingly
             if(oldInv != null){
-                //System.out.println(oldInv.getQuantity()+" "+inventoryToBeUpdated.getQuantity());
                 int newQuant = inventoryToBeUpdated.getQuantity();
                 int oldQuant = oldInv.getQuantity();
 
@@ -54,10 +57,10 @@ public class InventoryService {
             }else{
                 increment = inventoryToBeUpdated.getItem().getSize() * inventoryToBeUpdated.getQuantity();
             }
-            //System.out.println(warehouse.getSize()+" "+increment+" "+ warehouse.getCapacity());
+
+            //check if the newly added inventory will exceed warehouse capacity
             if(warehouse.getSize()+increment <= warehouse.getCapacity()){
                 warehouse.setSize(warehouse.getSize()+increment);
-                //System.out.println(warehouse.getSize());
 
                 warehouseRepository.save(warehouse);
                 Inventory res = inventoryRepository.save(inventoryToBeUpdated);
@@ -65,16 +68,24 @@ public class InventoryService {
 
             }
 
-            //System.out.println(warehouse.getSize()+" "+inventoryToBeUpdated.getItem()+" "+ inventoryToBeUpdated.getQuantity())
         }
+        //return bad request to client if the request fails
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Exceeded warehouse capacity");
 
 
-        //return inventoryRepository.save(inventoryToBeUpdated);
     }
+
+    /**
+     * Update inventory by id.
+     *
+     * @param inventoryToBeUpdated the inventory to be updated
+     * @return the response entity
+     */
     public ResponseEntity<Object> updateById(Inventory inventoryToBeUpdated) {
+        //get existing inventory
         Inventory existingInv = inventoryRepository.findById(inventoryToBeUpdated.getId()).orElse(null);
         if(existingInv!=null){
+            //update the corresponding warehouse size
             Warehouse warehouse = existingInv.getWarehouse();
             int newQuant = inventoryToBeUpdated.getQuantity();
             int oldQuant = existingInv.getQuantity();

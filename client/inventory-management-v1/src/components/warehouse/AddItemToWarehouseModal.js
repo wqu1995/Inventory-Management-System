@@ -6,6 +6,9 @@ import api from '../../api/axiosConfig';
 function AddItemToWarehouseModal({filteredItems, showModal, handleClose, handleAddItemToWarehouse}) {
 
     const modalRef = useRef(null);
+
+
+    //initial object modal for add item data 
     const initAddItemData = {
         item: null,
         quantity: ''
@@ -47,6 +50,7 @@ function AddItemToWarehouseModal({filteredItems, showModal, handleClose, handleA
         handleClose();
     }
     
+    //update the additem data based on the form change
     const handleChange = (fieldName, e)=>{
 
         if (fieldName === 'item') {
@@ -75,7 +79,6 @@ function AddItemToWarehouseModal({filteredItems, showModal, handleClose, handleA
               [fieldName]: value
             }));
           }
-        //console.log(addItemData);
 
     }
     return (

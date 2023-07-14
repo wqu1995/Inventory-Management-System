@@ -46,13 +46,22 @@ public class ItemService {
         return itemRepository.save(itemToBeAdded);
     }
 
+    /**
+     * Uppdate item.
+     *
+     * @param itemToBeUpdated the item to be updated
+     * @return the item
+     */
     public Item uppdateItem(Item itemToBeUpdated){
+        //find existing item
         Item existingItem = itemRepository.findById(itemToBeUpdated.getId()).orElse(null);
 
         if(existingItem!=null){
+            //update existing item
             existingItem.setName(itemToBeUpdated.getName());
             existingItem.setDescription(itemToBeUpdated.getDescription());
             if(existingItem.getSize() != itemToBeUpdated.getSize()){
+                //update all warehouse size if item size is being changed
                 int diff = itemToBeUpdated.getSize() - existingItem.getSize();
                 Set<Inventory> inventories = existingItem.getInventories();
                 for(Inventory inv : inventories){
@@ -66,6 +75,7 @@ public class ItemService {
 
             Item updatedItem = itemRepository.save(existingItem);
 
+            //update the item entry for all associated inventories
             Set<Inventory> inventories = updatedItem.getInventories();
             if(inventories!= null){
                 for(Inventory inventory : inventories){
@@ -89,6 +99,7 @@ public class ItemService {
         Item item = itemRepository.findById(itemToBeDeleted).orElse(null);
 
         if(item!=null){
+            //update all warehouse size associated with the item
             List<Inventory> inv = inventoryRepository.findAllByItem_Id(itemToBeDeleted);
             for(Inventory i : inv){
                 Warehouse warehouse = i.getWarehouse();
@@ -102,6 +113,12 @@ public class ItemService {
         return itemRepository.costumeDeleteById(itemToBeDeleted);
     }
 
+    /**
+     * Gets warehouses by item id.
+     *
+     * @param id the id
+     * @return the warehouses by item id
+     */
     public Set<Warehouse> getWarehousesByItemId(int id) {
         Item item = itemRepository.findById(id).orElse(null);
         if (item != null) {

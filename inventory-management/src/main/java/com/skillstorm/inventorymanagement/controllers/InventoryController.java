@@ -85,6 +85,13 @@ public class InventoryController {
         return new ResponseEntity<>(rowAffected, HttpStatus.OK);
     }
 
+    /**
+     * Method to handle PUT("/inventories/updateInventoryById") request
+     *
+     *
+     * @param inventoryToBeUpdated the inventory to be updated
+     * @return the response entity
+     */
     @PutMapping("/updateInventoryById")
     public ResponseEntity<Object> updateInventoryById(@RequestBody Inventory inventoryToBeUpdated){
 
@@ -95,9 +102,7 @@ public class InventoryController {
             return serviceResponse;
 
         }
-//        Object updatedInventory = inventoryService.addInventory(inventoryToBeUpdated);
 //
-//        return new ResponseEntity<>(updatedInventory, HttpStatus.ACCEPTED);
 
     }
 }

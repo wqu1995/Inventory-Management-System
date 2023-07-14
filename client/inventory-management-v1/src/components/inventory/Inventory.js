@@ -6,17 +6,20 @@ import AddInventoryModal from './AddInventoryModal';
 
 function Inventory() {
 
+    //state for storing all inventory entries
     const [inventory, setInventory] = useState([]);
     const [items, setItems] = useState([]);
     const [warehouse, setWarehouse] = useState([]);
     const [alertMessage, setAlertMessage] = useState('');
 
+    //state for handling add inventory modal
     const [showAddInvModal, setShowInvModal] = useState(false);
     const [isEditing, setIsEditing] = useState(null);
     const [updatedQuant, setUpdatedQuant] = useState('');
 
     const [quantityError, setQuantityError] = useState('');
 
+    //handle get request to get all the inventories 
     const getInventory = () =>{
         api.get("/inventories").then((response)=>{
             setInventory(response.data);
@@ -25,6 +28,7 @@ function Inventory() {
         })
     }
 
+    //handle get request to get all the items 
     const getItems =() =>{
         api.get("/items").then((response)=>{
             setItems(response.data);
@@ -33,6 +37,7 @@ function Inventory() {
         })
     }
 
+    //handle get request to get all the warehouses
     const getWarehouse = () =>{
         api.get("/warehouses").then((response)=>{
             setWarehouse(response.data);
@@ -41,10 +46,12 @@ function Inventory() {
         })
     }
 
+    //perform post request to add new inventory
     const handleAddInventory = (addInvData) =>{
-        console.log(addInvData);
+        //perform post request to backend
         api.post("/inventories/addInventory", addInvData).then((response)=>{
             if(response.status===201 && response.data){
+                //update inventory state
                 setInventory([...inventory, response.data])
                 setAlertMessage('');
             }
@@ -58,6 +65,7 @@ function Inventory() {
         })
     }
 
+    //perform delete request to delete a selected inventory
     const handleDeleteInv = (inv) =>{
         const confirmed = window.confirm('Are you sure you want to delete this inventory?');
         if(confirmed){
@@ -78,6 +86,7 @@ function Inventory() {
         setUpdatedQuant(inv.quantity);
     }
 
+    //perform put request to update the selected inventory
     const handleUpdateInv = (e) =>{
         e.preventDefault();
         console.log(isEditing);
@@ -146,11 +155,13 @@ function Inventory() {
         setUpdatedQuant(value);
     }
 
+    //filter out all the warehouses associated with the inventory
     const getWarehouseName = (warehouseId) =>{
         const wh = warehouse.find((x) => x.id === warehouseId);
         return wh ? wh.name : ''; 
     }
 
+    //filter out all the items associated with the invenotry 
     const getItemName = (itemId) =>{
         const item = items.find((i) => i.id === itemId);
         return item ? item.name : '';

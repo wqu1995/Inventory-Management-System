@@ -70,6 +70,12 @@ public class ItemController {
         return new ResponseEntity<>(rowsAffected, HttpStatus.OK);
     }
 
+    /**
+     * Method to handle GET("/items/item/{id})request, to get the item with the requested id
+     *
+     * @param id the id
+     * @return the response entity
+     */
     @GetMapping("/item/{id}")
     public ResponseEntity<Set<Warehouse>> getWarehousesByItemId(@PathVariable int id){
         Set<Warehouse> result = itemService.getWarehousesByItemId(id);

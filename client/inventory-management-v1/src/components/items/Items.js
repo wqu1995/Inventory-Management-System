@@ -6,11 +6,13 @@ import ItemDetail from './ItemDetail';
 
 
 function Items() {
+    //state variable for storing all items
     const [items, setItems] = useState();
 
     const [showAddItemModal, setShowAddItemModal] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
     const [warehouses, setWarehouses] = useState([]);
+
 
     const getItems = () =>{
         api.get("/items").then((response) =>{
@@ -24,6 +26,7 @@ function Items() {
         setShowAddItemModal(true);
     }
 
+    //send post request to add an item
     const handleAddItem = (addItemData) =>{
         api.post("/items/addItem", addItemData).then((response)=>{
             if(response.status===201 && response.data){
@@ -35,6 +38,7 @@ function Items() {
         //console.log(addItemData);
     }
 
+    //send delete request to delte the selected item
     const handleDeleteItem = (deleteItemData) =>{
         const confirm = window.confirm('Are you sure you want to delete this item?');
         if(confirm){
@@ -50,6 +54,7 @@ function Items() {
         }
     }
 
+    //perform put request to update the selected item
     const handleEditItem = (editItemData)=>{
         //console.log(editItemData);
         api.put("/items/updateItem", editItemData).then((response)=>{
@@ -68,6 +73,8 @@ function Items() {
         })
     }
 
+
+    //retrieve all warehouses that are assoiciate with item
     const handleGetWarehouseByItemId =(itemId) =>{
             api.get(`/items/item/${itemId}`).then((response) =>{
                 if(response.status === 200 && response.data){
@@ -105,7 +112,6 @@ function Items() {
             setWarehouses(prevWarehouse => prevWarehouse.filter(wh => wh.id !== warehouseId))
         }
         if(type ==="update"){
-            //console.log(warehouseId + quant);
             setWarehouses(prevWarehouse =>prevWarehouse.map(wh =>{
                 if(wh.id === warehouseId){
                     return {
@@ -132,6 +138,7 @@ function Items() {
                         <h1>Figures</h1>
                         <Button variant = "primary" className='custom-button' onClick={handleShowAddItemModal}>Add Item</Button>
                     </div>
+                    <p>Click the rows to see detail!</p>
                     <Table striped bordered hover size='sm' className='custom-table'>
                         <thead>
                             <tr>

@@ -3,7 +3,6 @@ package com.skillstorm.inventorymanagement.services;
 import com.skillstorm.inventorymanagement.models.Inventory;
 import com.skillstorm.inventorymanagement.models.Item;
 import com.skillstorm.inventorymanagement.models.Warehouse;
-import com.skillstorm.inventorymanagement.models.WarehouseDTO;
 import com.skillstorm.inventorymanagement.repositories.WarehouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,15 +49,14 @@ public class WarehouseService {
         return warehouseRepo.costumeDeleteById(warehouseId);
     }
 
+    /**
+     * Gets items by warehouse id.
+     *
+     * @param id the id
+     * @return the items by warehouse id
+     */
     public Set<Item> getItemsByWarehouseId(int id) {
-//        Warehouse warehouse = warehouseRepo.findByIdWithInventories(id);
-//        if(warehouse!=null){
-//            System.out.println(warehouse.toString());
-//            return warehouse.getInventories().stream().map(Inventory::getItem).collect(Collectors.toSet());
-//
-//            // return warehouse.getInventories().stream().map(Inventory::getItem).collect(Collectors.toSet());
-//        }
-//        return null;
+
 
         Warehouse warehouse = warehouseRepo.findById(id).orElse(null);
         if(warehouse!=null){

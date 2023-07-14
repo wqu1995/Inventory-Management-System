@@ -14,8 +14,8 @@ function Warehouse() {
     const [editingWarehouse, setEditingWarehouse] = useState(null);
     const [expandedWarehouse, setExpandedWarehouse] = useState(null);
     const [warehouseItemData, setWarehouseItemData] = useState([]);
-    const [updateTable, setUpdateTable] = useState(false);
 
+    //get warehouses from database 
     const getWarehouses = () =>{
         api.get("/warehouses").then((response) =>{
             setWarehouses(response.data);
@@ -24,6 +24,7 @@ function Warehouse() {
         })
     }
 
+    //add warehouse to database 
     const handleAddWarehouse =(newWarehouse) =>{
         api.post("/warehouses/addWarehouse", newWarehouse).then((response) =>{
             if(response.status===201 && response.data){
@@ -34,8 +35,8 @@ function Warehouse() {
         })
     }
 
+    //update warehouse to database 
     const handleEditWarehouse = (editedWarehouse) =>{
-        //console.log(editedWarehouse);
         api.put("/warehouses/updateWarehouse", editedWarehouse).then((response)=>{
             if(response.status===202 && response.data){
                 setWarehouses(prevWarehouses =>{
@@ -53,8 +54,8 @@ function Warehouse() {
         })
     }
 
+    //delete warehouse
     const handleDeleteWarehouse = (warehouseId) =>{
-        //console.log(warehouseToBeDeleted)
         const confirmed = window.confirm('Are you sure you want to delete this warehouse?');
         if(confirmed){
             api.delete(`/warehouses/deleteWarehouse/${warehouseId}`).then((response) =>{
@@ -68,6 +69,7 @@ function Warehouse() {
         }
     }
 
+    //retrieve all items associate with warehouse 
     const handleGetItemsByWarehouseId = (warehouseId) =>{
         api.get(`/warehouses/warehouse/${warehouseId}`).then((response) =>{
             if(response.status === 200 && response.data){
@@ -97,15 +99,14 @@ function Warehouse() {
         setShowModal(true);
     }
 
+    //expand the warehouse card
     const handleExpandWarehouse = (warehouseId) => {
-        //console.log(filteredItems)
         if(expandedWarehouse === warehouseId){
             setExpandedWarehouse(null);
         }else{
             handleGetItemsByWarehouseId(warehouseId);
             setExpandedWarehouse(warehouseId);
         }
-        //setExpandedWarehouse(expandedWarehouse === warehouseId ? null : warehouseId);
     };
 
     const filteredItems = warehouseItemData.flatMap((obj) =>
@@ -141,6 +142,7 @@ function Warehouse() {
                 <h1 className="text-dark">Warhouses</h1>
                 <Button variant = "primary" className='custom-button' onClick={handleShowModal}>Add Warehouse</Button>
             </div>
+            <p>Click to expand!</p>
 
             {warehouses?.map((warehouse)=>(
                 <Card 
@@ -158,8 +160,6 @@ function Warehouse() {
                             <Button variant="outline-primary" size="sm" onClick={(e) => {e.stopPropagation(); handleEditModalOpen(warehouse)}}> Edit</Button>
                             <span className="mr-2"></span> {/* Add spacing between buttons */}
                             <Button variant="outline-danger" size="sm" onClick={(e) => {e.stopPropagation(); handleDeleteWarehouse(warehouse.id)}}> Delete</Button>
-                            {/* <span className="mr-2"></span>  */}
-                            {/* <Button variant='outline-secondary' size='sm' onClick={()=> handleExpandWarehouse(warehouse.id)}>{expandedWarehouse === warehouse.id ? 'Hide Items' : 'Show Items'}</Button> */}
                             </div>
                         </div>
                         {expandedWarehouse === warehouse.id && (
