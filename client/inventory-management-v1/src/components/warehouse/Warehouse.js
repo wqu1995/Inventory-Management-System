@@ -128,12 +128,7 @@ function Warehouse() {
 
     const modalRef = useRef(null);
 
-    const handleCardClick = (e) => {
-        const isClickedInsideModal = modalRef.current && modalRef.current.contains(e.target);
-        if (!isClickedInsideModal) {
-         // console.log("here");
-        }
-      };
+
 
     const handleUpdate = () =>{
         getWarehouses();
@@ -152,7 +147,7 @@ function Warehouse() {
                     key={warehouse.id} 
                     className={`mb-3 custom-card ${expandedWarehouse === warehouse.id ? 'expanded' : ''}`}
                 >
-                    <Card.Body onClick={(e)=> {e.stopPropagation(); handleExpandWarehouse(warehouse.id); handleCardClick()} }>
+                    <Card.Body onClick={(e)=> {e.stopPropagation(); handleExpandWarehouse(warehouse.id);} }>
                         <div className="d-flex justify-content-between align-items-center">
                             <div>
                                 <Card.Title>{warehouse.name}</Card.Title>

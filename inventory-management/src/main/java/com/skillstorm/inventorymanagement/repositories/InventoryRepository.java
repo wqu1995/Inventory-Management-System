@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository
 public interface InventoryRepository extends JpaRepository<Inventory, InventoryId> {
 
@@ -15,5 +17,7 @@ public interface InventoryRepository extends JpaRepository<Inventory, InventoryI
     @Modifying
     @Transactional
     int costumeDeleteById(InventoryId id);
+
+    List<Inventory> findAllByItem_Id(int itemId);
 
 }

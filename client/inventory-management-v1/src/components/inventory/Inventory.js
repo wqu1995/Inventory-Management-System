@@ -188,16 +188,18 @@ function Inventory() {
                             <td>{getItemName(inv.id.itemId)}</td>
                             <td>
                                 {isEditing === inv ? (
-                                    <div className = "d-flex">
+                                    <div className="d-flex align-items-center input-container">
                                         <input
                                             type = "text"
                                             value = {updatedQuant}
                                             onChange = {(e) =>{handleChange(e)}}
+                                            
                                         />
 
-                                        
-                                        <Button variant="outline-primary" size="sm" onClick={(e) => {e.stopPropagation();handleUpdateInv(e)}}>Update!</Button>
-                                        <Button variant="outline-secondary" size="sm" onClick={(e) => {e.stopPropagation();handleCancelEdit()}}>Cancel</Button>
+                                        <div className='button-container'>
+                                            <Button variant="outline-primary" size="sm" onClick={(e) => {e.stopPropagation();handleUpdateInv(e)}}>Update!</Button>
+                                            <Button variant="outline-secondary" size="sm" onClick={(e) => {e.stopPropagation();handleCancelEdit()}}>Cancel</Button>
+                                        </div>
 
                                     </div>
                                 ) :(inv.quantity)}

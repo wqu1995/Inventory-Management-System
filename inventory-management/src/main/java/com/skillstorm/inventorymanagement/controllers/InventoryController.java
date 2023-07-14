@@ -84,5 +84,21 @@ public class InventoryController {
 
         return new ResponseEntity<>(rowAffected, HttpStatus.OK);
     }
+
+    @PutMapping("/updateInventoryById")
+    public ResponseEntity<Object> updateInventoryById(@RequestBody Inventory inventoryToBeUpdated){
+
+        ResponseEntity<Object> serviceResponse = inventoryService.updateById(inventoryToBeUpdated);
+        if(serviceResponse.getStatusCode() == HttpStatus.OK){
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(serviceResponse.getBody());
+        }else{
+            return serviceResponse;
+
+        }
+//        Object updatedInventory = inventoryService.addInventory(inventoryToBeUpdated);
+//
+//        return new ResponseEntity<>(updatedInventory, HttpStatus.ACCEPTED);
+
+    }
 }
 

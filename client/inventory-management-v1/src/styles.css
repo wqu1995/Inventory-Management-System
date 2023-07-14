@@ -48,6 +48,10 @@ h1, h2, h3, h4, h5, h6 {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
   margin-top: 1rem;
+  margin-right: 8px;
+}
+.button-margin{
+  margin-right: 8px;
 }
 
 input::-webkit-outer-spin-button,
@@ -92,4 +96,31 @@ margin: 0;
   display: flex;
   justify-content: center;
   gap: 8px;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  gap: 8px; 
+}
+
+.input-container input[type="text"] {
+  margin-right: 8px; 
+}
+
+.items-container {
+  display: flex;
+}
+
+.items-table {
+  flex: 1; 
+}
+
+.additional-info {
+  flex: 1; 
+  padding: 1rem; 
+  background-color: #f8f9fa; 
+  margin-left: 1rem; 
+  border-left: 1px solid #ccc; 
+
 }

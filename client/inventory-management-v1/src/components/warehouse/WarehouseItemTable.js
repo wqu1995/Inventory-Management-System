@@ -162,7 +162,6 @@ function WarehouseItemTable({filteredItems, warehouseId, handleUpdate}) {
             <Table striped bordered hover size='sm' className='custom-table'>
                 <thead>
                     <tr>
-                        <th>Item Id</th>
                         <th>Item Name</th>
                         <th>Quantity</th>
                         <th>Operations</th>
@@ -171,7 +170,6 @@ function WarehouseItemTable({filteredItems, warehouseId, handleUpdate}) {
                 <tbody>
                     {filteredItems?.map((item, index) =>(
                         <tr key={item.itemId}>
-                            <td>{item.itemId}</td>
                             <td>{item.itemName}</td>
                             <td>{item.quantity}</td>
                             <td className="button-container">

@@ -52,7 +52,7 @@ public class ItemController {
      */
     @PutMapping("/updateItem")
     public ResponseEntity<Item> updateItem(@RequestBody Item itemToBeUpdated){
-        Item updatedItem = itemService.addItem(itemToBeUpdated);
+        Item updatedItem = itemService.uppdateItem(itemToBeUpdated);
 
         return new ResponseEntity<>(updatedItem, HttpStatus.ACCEPTED);
     }
@@ -60,12 +60,12 @@ public class ItemController {
     /**
      * Method to handle DELETE("/items/deleteItem") request.
      *
-     * @param itemToBeDeleted the item to be deleted
+     * @param itemId the item id
      * @return the response entity
      */
-    @DeleteMapping("/deleteItem")
-    public ResponseEntity<Integer> deleteItem(@RequestBody Item itemToBeDeleted){
-        int rowsAffected = itemService.deleteItem(itemToBeDeleted);
+    @DeleteMapping("/deleteItem/{itemId}")
+    public ResponseEntity<Integer> deleteItem(@PathVariable Integer itemId){
+        int rowsAffected = itemService.deleteItem(itemId);
 
         return new ResponseEntity<>(rowsAffected, HttpStatus.OK);
     }

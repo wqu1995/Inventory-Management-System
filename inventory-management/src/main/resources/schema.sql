@@ -23,12 +23,9 @@ CREATE TABLE inventories (
   PRIMARY KEY (item_id, warehouse_id)
 );
 
-<<<<<<< Updated upstream
-ALTER TABLE `inventories` ADD FOREIGN KEY (`item_id`) REFERENCES `items` (`id`) ON DELETE CASCADE;
 
-ALTER TABLE `inventories` ADD FOREIGN KEY (`warehouse_id`) REFERENCES `warehouses` (`id`)ON DELETE CASCADE;
-=======
+
 ALTER TABLE inventories ADD FOREIGN KEY (item_id) REFERENCES items (id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE inventories ADD FOREIGN KEY (warehouse_id) REFERENCES warehouses (id)ON DELETE CASCADE ON UPDATE CASCADE;
->>>>>>> Stashed changes
+

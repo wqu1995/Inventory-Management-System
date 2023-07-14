@@ -91,7 +91,7 @@ function AddItemToWarehouseModal({filteredItems, showModal, handleClose, handleA
                             <option value="">Select an item</option>
                             {itemData?.map((item)=>(
                                 <option key={item.id} value= {item.id}>
-                                    {item.name}
+                                    {`${item.id}. ${item.name}`}
                                 </option>
                                 
                             ))}

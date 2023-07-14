@@ -12,11 +12,8 @@ function App() {
             <Header/>
 
             <Routes>
-<<<<<<< Updated upstream
-                <Route path='/' element={<Inventory/>}></Route>
-=======
+
                 <Route path='/' element={<Warehouse/>}></Route>
->>>>>>> Stashed changes
                 <Route path='/items' element={<Items/>}></Route>
                 <Route path='/inventory' element={<Inventory/>}></Route>
                 <Route path='/warehouse' element={<Warehouse/>}></Route>
