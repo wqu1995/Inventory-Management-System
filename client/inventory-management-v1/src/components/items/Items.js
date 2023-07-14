@@ -42,10 +42,30 @@ function Items() {
                 if(response.status === 200){
                     setItems(prevItems => prevItems.filter(item => item.id !== deleteItemData.id))
                 }
+                setSelectedItem(null);
+                setWarehouses([]);
             }).catch((error) =>{
                 console.log(error);
             })
         }
+    }
+
+    const handleEditItem = (editItemData)=>{
+        //console.log(editItemData);
+        api.put("/items/updateItem", editItemData).then((response)=>{
+            if(response.status === 202 && response.data){
+                //console.log("good")
+                setItems((prevItems)=>
+                prevItems.map((item)=>(item.id === response.data.id ? response.data : item))
+                );
+                //setSelectedItem(null);
+                //setWarehouses([]);
+                setSelectedItem(response.data);
+                handleGetWarehouseByItemId(response.data.id);
+            }
+        }).catch((error) =>{
+            console.log(error);
+        })
     }
 
     const handleGetWarehouseByItemId =(itemId) =>{
@@ -59,6 +79,7 @@ function Items() {
                         return {...warehouse, quantity};
                     });
                     setWarehouses(updatedWarehouses);
+                    
                 }
             }).catch((error)=>{
                 console.log(error)
@@ -79,9 +100,21 @@ function Items() {
         setSelectedItem(null);
     }
 
-    const update = (type, warehouse) =>{
-        if(type == "delete"){
-            setWarehouses(prevWarehouse => prevWarehouse.filter(wh => wh.id !== warehouse.id))
+    const update = (type, warehouseId, quant) =>{
+        if(type === "delete"){
+            setWarehouses(prevWarehouse => prevWarehouse.filter(wh => wh.id !== warehouseId))
+        }
+        if(type ==="update"){
+            //console.log(warehouseId + quant);
+            setWarehouses(prevWarehouse =>prevWarehouse.map(wh =>{
+                if(wh.id === warehouseId){
+                    return {
+                        ...wh,
+                        quantity : quant
+                    };
+                }
+                return wh;
+            }))
         }
     }
 
@@ -104,7 +137,6 @@ function Items() {
                                 <th>Name</th>
                                 <th>Description</th>
                                 <th>Size</th>
-                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -113,10 +145,7 @@ function Items() {
                                     <td>{item.name}</td>
                                     <td>{item.description}</td>
                                     <td>{item.size}</td>
-                                    <td className="button-container">
-                                        <Button variant="outline-danger" size="sm" onClick={(e) => {e.stopPropagation();handleDeleteItem(item)}}>Delete</Button>
 
-                                    </td>
                                 </tr>
                             ))}
                         </tbody>
@@ -129,6 +158,8 @@ function Items() {
                 warehouses = {warehouses}
                 handleClose = {handleItemClose}
                 update = {update}
+                handleEditItem = {handleEditItem}
+                handleDeleteItem = {handleDeleteItem}
                 />
 
 

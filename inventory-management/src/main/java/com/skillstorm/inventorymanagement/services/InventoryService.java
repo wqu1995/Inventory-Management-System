@@ -72,7 +72,26 @@ public class InventoryService {
 
         //return inventoryRepository.save(inventoryToBeUpdated);
     }
+    public ResponseEntity<Object> updateById(Inventory inventoryToBeUpdated) {
+        Inventory existingInv = inventoryRepository.findById(inventoryToBeUpdated.getId()).orElse(null);
+        if(existingInv!=null){
+            Warehouse warehouse = existingInv.getWarehouse();
+            int newQuant = inventoryToBeUpdated.getQuantity();
+            int oldQuant = existingInv.getQuantity();
 
+            int increment = existingInv.getItem().getSize() * (newQuant-oldQuant);
+            if(warehouse.getSize()+increment <= warehouse.getCapacity()){
+                warehouse.setSize(warehouse.getSize()+increment);
+
+                warehouseRepository.save(warehouse);
+                existingInv.setQuantity(inventoryToBeUpdated.getQuantity());
+                Inventory res = inventoryRepository.save(existingInv);
+                return ResponseEntity.ok(res);
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Exceeded warehouse capacity");
+    }
     /**
      * Delete inventory that matches the primary key in database.
      *
@@ -92,4 +111,6 @@ public class InventoryService {
         }
         return inventoryRepository.costumeDeleteById(inventoryToBeDeleted);
     }
+
+
 }

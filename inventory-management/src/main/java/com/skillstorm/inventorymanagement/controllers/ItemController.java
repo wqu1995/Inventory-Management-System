@@ -52,7 +52,7 @@ public class ItemController {
      */
     @PutMapping("/updateItem")
     public ResponseEntity<Item> updateItem(@RequestBody Item itemToBeUpdated){
-        Item updatedItem = itemService.addItem(itemToBeUpdated);
+        Item updatedItem = itemService.uppdateItem(itemToBeUpdated);
 
         return new ResponseEntity<>(updatedItem, HttpStatus.ACCEPTED);
     }

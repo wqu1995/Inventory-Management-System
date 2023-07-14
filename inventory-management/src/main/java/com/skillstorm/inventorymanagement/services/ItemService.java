@@ -46,6 +46,38 @@ public class ItemService {
         return itemRepository.save(itemToBeAdded);
     }
 
+    public Item uppdateItem(Item itemToBeUpdated){
+        Item existingItem = itemRepository.findById(itemToBeUpdated.getId()).orElse(null);
+
+        if(existingItem!=null){
+            existingItem.setName(itemToBeUpdated.getName());
+            existingItem.setDescription(itemToBeUpdated.getDescription());
+            if(existingItem.getSize() != itemToBeUpdated.getSize()){
+                int diff = itemToBeUpdated.getSize() - existingItem.getSize();
+                Set<Inventory> inventories = existingItem.getInventories();
+                for(Inventory inv : inventories){
+                    Warehouse w = inv.getWarehouse();
+                    w.setSize(w.getSize()+diff*inv.getQuantity());
+                    warehouseRepository.save(w);
+                }
+
+            }
+            existingItem.setSize(itemToBeUpdated.getSize());
+
+            Item updatedItem = itemRepository.save(existingItem);
+
+            Set<Inventory> inventories = updatedItem.getInventories();
+            if(inventories!= null){
+                for(Inventory inventory : inventories){
+                    inventory.setItem(updatedItem);
+                    inventoryRepository.save(inventory);
+                }
+            }
+            return updatedItem;
+        }
+        return null;
+    }
+
     /**
      * Delete item that matches the id in database.
      *

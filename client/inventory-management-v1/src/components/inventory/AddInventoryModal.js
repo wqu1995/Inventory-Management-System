@@ -82,7 +82,6 @@ function AddInventoryModal({showModal, handleClose, handleAddInventory, inv, war
         //console.log(newInvData);
         e.preventDefault();
         handleAddInventory(newInvData);
-        setAddInvData(initInvData);
         setQuantityError('');
         handleClose();
     }

@@ -19,7 +19,7 @@ function EditWarehouseModal({ show, handleClose, warehouse, handleEditWarehouse 
             const trimmedValue = value.trim();
             setEditWarehouseData({
                 ...editWarehouseData,
-                [filedName]: e.target.value
+                [filedName]: trimmedValue
             })
         }
 
