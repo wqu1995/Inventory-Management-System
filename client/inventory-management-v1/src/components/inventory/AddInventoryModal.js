@@ -20,6 +20,7 @@ function AddInventoryModal({showModal, handleClose, handleAddInventory, inv, war
     }
 
     const handleChange = (fieldName, e) =>{
+        //update warehouse field
         if(fieldName === 'warehouse'){
             const warehouseId = Number(e.target.value);
             
@@ -35,6 +36,7 @@ function AddInventoryModal({showModal, handleClose, handleAddInventory, inv, war
                 }));
             }
 
+            //update item field
         }else if(fieldName === 'item'){
             const itemId = Number(e.target.value);
             
@@ -54,6 +56,7 @@ function AddInventoryModal({showModal, handleClose, handleAddInventory, inv, war
                 }));
             }
         }else{
+            //update quantity field
             const value = e.target.value != '' ? e.target.value : '';
             setAddInvData((prevData) =>({
                 ...prevData,

@@ -3,11 +3,11 @@ import {Modal, Button, Form} from 'react-bootstrap';
 
 function EditWarehouseModal({ show, handleClose, warehouse, handleEditWarehouse }) {
 
+    //state variable for storing warehouse data that being edit
     const [editWarehouseData, setEditWarehouseData] = useState(undefined);
     const [quantityError, setQuantityError] = useState('');
 
     useEffect(()=>{
-        //console.log(warehouse);
         setEditWarehouseData(warehouse);
     }, [warehouse]);
 
@@ -22,9 +22,6 @@ function EditWarehouseModal({ show, handleClose, warehouse, handleEditWarehouse 
                 [filedName]: trimmedValue
             })
         }
-
-
-        //setEditWarehouseData(e.target.value);
         
     };
 

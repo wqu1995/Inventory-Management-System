@@ -3,8 +3,10 @@ import { Modal, Button, Form } from 'react-bootstrap';
 
 function AddWarehouseModal({show, handleClose, handleAddWarehouse}) {
 
+    //state variable for storing warehouse data that will be added
     const [addWarehouseData, updateAddedWarehouse] = useState(null);
 
+    // update addwarehousedata
     const handleChange = (e) =>{
         updateAddedWarehouse({
             ...addWarehouseData,

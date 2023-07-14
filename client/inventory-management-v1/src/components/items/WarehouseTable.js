@@ -3,6 +3,7 @@ import { Table, Button, Modal, Form } from 'react-bootstrap'
 
 function WarehouseTable({selectedItem, warehouses, handleEdit, handleDelete}) {
     
+    //state variable for keep track for the inventory being updated
     const [editWarehouse, setEditWarehouse] = useState(null);
     const [updatedQuant, setUpdatedQuant] = useState(0);
     const [quantityError, setQuantityError] = useState('');
@@ -42,11 +43,13 @@ function WarehouseTable({selectedItem, warehouses, handleEdit, handleDelete}) {
         handleCloseModal();
     }
 
+    //if there is no warehouse assoiciate with item, dont show the table
     if(warehouses.length === 0){
         return(
             <div></div>
         )
     }
+    //display the warehouse table
     return (
         <div>
             <Table striped bordered hover size='sm' className='custom-table'>

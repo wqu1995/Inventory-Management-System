@@ -12,6 +12,7 @@ function ItemDetail({selectedItem, warehouses, handleClose, update, handleEditIt
     const [quantityError, setQuantityError] = useState('');
     const [alertMessage, setAlertMessage] = useState('');
 
+    //update item total count 
     useEffect(()=>{
         const total = warehouses.reduce((total, warehouse) => total + warehouse.quantity, 0);
         setTotalCount(total);
@@ -22,6 +23,8 @@ function ItemDetail({selectedItem, warehouses, handleClose, update, handleEditIt
         handleClose();
     }
 
+
+    //perform delete request to delete the inventory entry
     const handleDelteInv = (warehouse) =>{
         const confirm = window.confirm('Are you sure you want to delete this Inventory?');
         if(confirm){
@@ -36,6 +39,7 @@ function ItemDetail({selectedItem, warehouses, handleClose, update, handleEditIt
         }
     }
 
+    //perofrm update request to update the inventory 
     const handleEditInv = (editData, oldQuant) =>{
 
         //console.log(editData);

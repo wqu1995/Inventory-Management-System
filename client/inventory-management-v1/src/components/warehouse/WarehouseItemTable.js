@@ -7,6 +7,7 @@ import api from '../../api/axiosConfig';
 
 
 function WarehouseItemTable({filteredItems, warehouseId, handleUpdate}) {
+    //component for showing items in a warehouse
     const [showAddItemModal, setShowAddItemModal] = useState(false);
     const [detailItem, setDetailItem] = useState(null);
     const [editItem, setEditItem] = useState(null);
@@ -30,6 +31,8 @@ function WarehouseItemTable({filteredItems, warehouseId, handleUpdate}) {
         setNewQuantity(item.quantity)
         setEditItem(item);
     }
+
+    // perform put request to update inventory
     const handleSaveEditItem = (e) =>{
         if(!newQuantity || newQuantity <1){
             setQuantityError('Quantity must be greater than 1');
@@ -75,6 +78,7 @@ function WarehouseItemTable({filteredItems, warehouseId, handleUpdate}) {
         setEditItem(null);
     }
 
+    //perform delete operation to delete an inventory
     const handleDeleteItem = (item) =>{
         //console.log(warehouseToBeDeleted)
         const confirmed = window.confirm('Are you sure you want to delete this entry?');
@@ -90,11 +94,10 @@ function WarehouseItemTable({filteredItems, warehouseId, handleUpdate}) {
     }
 
     const handleChange = (e) =>{
-
         setNewQuantity(e.target.value)
-        //console.log(e.target.value);
     }
 
+    //handle post operation to add inventory 
     const handleAddItemToWarehouse = (addItemData) =>{
         //console.log(filteredItems)
         if(addItemData){
@@ -130,6 +133,7 @@ function WarehouseItemTable({filteredItems, warehouseId, handleUpdate}) {
     }
 
 
+    //do not show the table if theres no item associate with the warehosue
     if(filteredItems.length === 0 ){
         return(
             <div className='mt-3'>
@@ -153,6 +157,7 @@ function WarehouseItemTable({filteredItems, warehouseId, handleUpdate}) {
 
         )
     }
+    //show the table 
     return (
         <div className='mt-3'>
             <div className="d-flex justify-content-between align-items-center">
