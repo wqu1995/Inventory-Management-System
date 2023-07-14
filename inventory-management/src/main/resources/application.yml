@@ -3,10 +3,13 @@ server:
 
 spring:
   datasource:
-    url: jdbc:h2:mem:inventory
-    username: sa
-    password:
-    driverClassName: org.h2.Driver
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    defer-datasource-initialization: true
+#    url: jdbc:h2:mem:inventory
+#    username: sa
+#    password:
+#    driverClassName: org.h2.Driver
+   url: jdbc:postgresql://localhost:5432/Figures
+   username: postgres
+   password: ASSwecan1995
+#  jpa:
+#    database-platform: org.hibernate.dialect.H2Dialect
+#    defer-datasource-initialization: true

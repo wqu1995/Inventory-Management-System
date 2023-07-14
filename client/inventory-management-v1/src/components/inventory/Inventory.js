@@ -166,7 +166,7 @@ function Inventory() {
     return (
         <div>
             <div className='d-flex justify-content-between align-items-center mb-3'>
-                <h1 className="text-dark">Inventory</h1>
+                <h1 className="text-dark">Stocks</h1>
                 <div>
                     {alertMessage && <Alert>{alertMessage}</Alert>}
                 </div>

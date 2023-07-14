@@ -15,8 +15,8 @@ function AddInventoryModal({showModal, handleClose, handleAddInventory, inv, war
 
 
     const handleCloseModal = (e) =>{
-        handleClose(false);
         setAddInvData(initInvData);
+        handleClose(false);
     }
 
     const handleChange = (fieldName, e) =>{
@@ -83,6 +83,7 @@ function AddInventoryModal({showModal, handleClose, handleAddInventory, inv, war
         e.preventDefault();
         handleAddInventory(newInvData);
         setQuantityError('');
+        setAddInvData(initInvData);
         handleClose();
     }
 

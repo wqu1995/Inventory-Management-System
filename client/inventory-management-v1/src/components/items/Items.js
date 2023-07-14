@@ -125,10 +125,11 @@ function Items() {
     return (
         <div>
 
+
             <div className="items-container">
                 <div className="items-table">
                     <div className='d-flex justify-content-between align-items-center mb-3'>
-                        <h1>Items</h1>
+                        <h1>Figures</h1>
                         <Button variant = "primary" className='custom-button' onClick={handleShowAddItemModal}>Add Item</Button>
                     </div>
                     <Table striped bordered hover size='sm' className='custom-table'>
@@ -171,6 +172,7 @@ function Items() {
             handleClose = {setShowAddItemModal}
             handleAddItem = {handleAddItem}
             />
+
         </div>
     )
 }
