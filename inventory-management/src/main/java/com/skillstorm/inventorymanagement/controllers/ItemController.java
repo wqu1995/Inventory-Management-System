@@ -1,6 +1,7 @@
 package com.skillstorm.inventorymanagement.controllers;
 
 import com.skillstorm.inventorymanagement.models.Item;
+import com.skillstorm.inventorymanagement.models.Warehouse;
 import com.skillstorm.inventorymanagement.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,9 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/items")
+@CrossOrigin
 public class ItemController {
 
     @Autowired
@@ -49,7 +52,7 @@ public class ItemController {
      */
     @PutMapping("/updateItem")
     public ResponseEntity<Item> updateItem(@RequestBody Item itemToBeUpdated){
-        Item updatedItem = itemService.addItem(itemToBeUpdated);
+        Item updatedItem = itemService.uppdateItem(itemToBeUpdated);
 
         return new ResponseEntity<>(updatedItem, HttpStatus.ACCEPTED);
     }
@@ -57,15 +60,21 @@ public class ItemController {
     /**
      * Method to handle DELETE("/items/deleteItem") request.
      *
-     * @param itemToBeDeleted the item to be deleted
+     * @param itemId the item id
      * @return the response entity
      */
-    @DeleteMapping("deleteItem")
-    public ResponseEntity<Integer> deleteItem(@RequestBody Item itemToBeDeleted){
-        int rowsAffected = itemService.deleteItem(itemToBeDeleted);
+    @DeleteMapping("/deleteItem/{itemId}")
+    public ResponseEntity<Integer> deleteItem(@PathVariable Integer itemId){
+        int rowsAffected = itemService.deleteItem(itemId);
 
         return new ResponseEntity<>(rowsAffected, HttpStatus.OK);
     }
 
+    @GetMapping("/item/{id}")
+    public ResponseEntity<Set<Warehouse>> getWarehousesByItemId(@PathVariable int id){
+        Set<Warehouse> result = itemService.getWarehousesByItemId(id);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 
 }

@@ -12,9 +12,11 @@ function App() {
             <Header/>
 
             <Routes>
+
+                <Route path='/' element={<Warehouse/>}></Route>
                 <Route path='/items' element={<Items/>}></Route>
                 <Route path='/inventory' element={<Inventory/>}></Route>
-                <Route path='/' element={<Warehouse/>}></Route>
+                <Route path='/warehouse' element={<Warehouse/>}></Route>
             </Routes>
         </div>
     </Router>

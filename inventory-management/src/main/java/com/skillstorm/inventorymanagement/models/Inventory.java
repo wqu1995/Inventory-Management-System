@@ -1,9 +1,8 @@
 package com.skillstorm.inventorymanagement.models;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
@@ -11,6 +10,18 @@ import java.util.Objects;
 public class Inventory {
     @EmbeddedId
     private InventoryId id;
+
+    @ManyToOne
+    @MapsId("warehouseId")
+    @JsonBackReference("warehouse")
+    //@JoinColumn(name = "warehouse_id")
+    private Warehouse warehouse;
+
+    @ManyToOne
+    @MapsId("itemId")
+    @JsonBackReference("item")
+    //@JoinColumn(name = "item_id")
+    private Item item;
 
     @Column
     private int quantity;
@@ -21,6 +32,28 @@ public class Inventory {
     public Inventory(InventoryId id, int quantity) {
         this.id = id;
         this.quantity = quantity;
+    }
+
+    public Inventory(InventoryId id, Warehouse warehouse, Item item, int quantity) {
+        this.id = id;
+        this.warehouse = warehouse;
+        this.item = item;
+        this.quantity = quantity;
+    }
+    public Warehouse getWarehouse() {
+        return warehouse;
+    }
+
+    public void setWarehouse(Warehouse warehouse) {
+        this.warehouse = warehouse;
+    }
+
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
     }
 
     public InventoryId getId() {
@@ -40,23 +73,26 @@ public class Inventory {
     }
 
     @Override
+    public String toString() {
+        return "Inventory{" +
+                "id=" + id +
+                ", warehouse=" + warehouse +
+                ", item=" + item +
+                ", quantity=" + quantity +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Inventory inventory = (Inventory) o;
-        return quantity == inventory.quantity && Objects.equals(id, inventory.id);
+        return quantity == inventory.quantity && Objects.equals(id, inventory.id) && Objects.equals(warehouse, inventory.warehouse) && Objects.equals(item, inventory.item);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, quantity);
+        return Objects.hash(id, warehouse, item, quantity);
     }
 
-    @Override
-    public String toString() {
-        return "Inventory{" +
-                "id=" + id +
-                ", quantity=" + quantity +
-                '}';
-    }
 }

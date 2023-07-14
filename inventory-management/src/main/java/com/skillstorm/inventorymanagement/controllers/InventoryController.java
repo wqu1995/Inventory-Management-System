@@ -38,10 +38,14 @@ public class InventoryController {
      * @return the response entity
      */
     @PostMapping("/addInventory")
-    public ResponseEntity<Inventory> addInventory(@RequestBody Inventory inventoryToBeAdded){
-        Inventory newInventory = inventoryService.addInventory(inventoryToBeAdded);
+    public ResponseEntity<Object> addInventory(@RequestBody Inventory inventoryToBeAdded){
+        ResponseEntity<Object> serviceResponse = inventoryService.addInventory(inventoryToBeAdded);
+        if(serviceResponse.getStatusCode() == HttpStatus.OK){
+            return ResponseEntity.status(HttpStatus.CREATED).body(serviceResponse.getBody());
+        }else{
+            return serviceResponse;
 
-        return new ResponseEntity<>(newInventory, HttpStatus.CREATED);
+        }
     }
 
     /**
@@ -51,24 +55,50 @@ public class InventoryController {
      * @return the response entity
      */
     @PutMapping("/updateInventory")
-    public ResponseEntity<Inventory> updateInventory(@RequestBody Inventory inventoryToBeUpdated){
-        Inventory updatedInventory = inventoryService.addInventory(inventoryToBeUpdated);
+    public ResponseEntity<Object> updateInventory(@RequestBody Inventory inventoryToBeUpdated){
 
-        return new ResponseEntity<>(updatedInventory, HttpStatus.ACCEPTED);
+        ResponseEntity<Object> serviceResponse = inventoryService.addInventory(inventoryToBeUpdated);
+        if(serviceResponse.getStatusCode() == HttpStatus.OK){
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(serviceResponse.getBody());
+        }else{
+            return serviceResponse;
+
+        }
+//        Object updatedInventory = inventoryService.addInventory(inventoryToBeUpdated);
+//
+//        return new ResponseEntity<>(updatedInventory, HttpStatus.ACCEPTED);
 
     }
 
     /**
      * Method to handle DELETE("/inventories/deleteInventory") request
      *
-     * @param inventoryToBeDeleted the inventory to be deleted
+     * @param warehouseId the warehouse id
+     * @param itemId      the item id
      * @return the response entity
      */
-    @DeleteMapping("/deleteInventory")
-    public ResponseEntity<Integer> deleteInventory(@RequestBody Inventory inventoryToBeDeleted){
-        int rowAffected = inventoryService.deleteInventory(inventoryToBeDeleted);
+    @DeleteMapping("/deleteInventory/{warehouseId}/{itemId}")
+    public ResponseEntity<Integer> deleteInventory(@PathVariable int warehouseId, @PathVariable int itemId){
+
+        int rowAffected = inventoryService.deleteInventory(new InventoryId(warehouseId, itemId));
 
         return new ResponseEntity<>(rowAffected, HttpStatus.OK);
+    }
+
+    @PutMapping("/updateInventoryById")
+    public ResponseEntity<Object> updateInventoryById(@RequestBody Inventory inventoryToBeUpdated){
+
+        ResponseEntity<Object> serviceResponse = inventoryService.updateById(inventoryToBeUpdated);
+        if(serviceResponse.getStatusCode() == HttpStatus.OK){
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(serviceResponse.getBody());
+        }else{
+            return serviceResponse;
+
+        }
+//        Object updatedInventory = inventoryService.addInventory(inventoryToBeUpdated);
+//
+//        return new ResponseEntity<>(updatedInventory, HttpStatus.ACCEPTED);
+
     }
 }
 

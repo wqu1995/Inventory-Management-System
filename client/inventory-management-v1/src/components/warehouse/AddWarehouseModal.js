@@ -3,7 +3,7 @@ import { Modal, Button, Form } from 'react-bootstrap';
 
 function AddWarehouseModal({show, handleClose, handleAddWarehouse}) {
 
-    const [addWarehouseData, updateAddedWarehouse] = useState();
+    const [addWarehouseData, updateAddedWarehouse] = useState(null);
 
     const handleChange = (e) =>{
         updateAddedWarehouse({
@@ -15,6 +15,7 @@ function AddWarehouseModal({show, handleClose, handleAddWarehouse}) {
     const handleSubmit = (e) =>{
         e.preventDefault();
         handleAddWarehouse(addWarehouseData);
+        updateAddedWarehouse(null);
         handleClose();
     }
 

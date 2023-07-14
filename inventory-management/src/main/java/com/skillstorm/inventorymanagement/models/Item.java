@@ -1,7 +1,12 @@
 package com.skillstorm.inventorymanagement.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * The type Item.
@@ -24,6 +29,11 @@ public class Item {
     @Column
     private int size;
 
+
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    @JsonManagedReference("item")
+    private Set<Inventory> inventories;
+
     public Item() {
     }
 
@@ -38,6 +48,22 @@ public class Item {
         this.name = name;
         this.description = description;
         this.size = size;
+    }
+
+    public Item(int id, String name, String description, int size, Set<Inventory> inventories) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.size = size;
+        this.inventories = inventories;
+    }
+
+    public Set<Inventory> getInventories() {
+        return inventories;
+    }
+
+    public void setInventories(Set<Inventory> inventories) {
+        this.inventories = inventories;
     }
 
     public int getId() {
@@ -78,6 +104,7 @@ public class Item {
         if (o == null || getClass() != o.getClass()) return false;
         Item item = (Item) o;
         return id == item.id && size == item.size && Objects.equals(name, item.name) && Objects.equals(description, item.description);
+
     }
 
     @Override
@@ -87,7 +114,7 @@ public class Item {
 
     @Override
     public String toString() {
-        return "item{" +
+        return "Item{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
